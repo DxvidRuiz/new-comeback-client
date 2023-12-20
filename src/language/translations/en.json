@@ -1,0 +1,16 @@
+{
+    "actions": {
+        "save": "Save",
+        "update": "update",
+        "delete": "eliminate",
+        "change_language": "Change language"
+    },
+    "test": {
+        "counting": "counting {{0}} of {{1}}"
+    },
+    "label": {
+        "email": "Email",
+        "password": "Password",
+        "change": "Change"
+    }
+}

@@ -1,0 +1,5 @@
+"key","base","es","en"
+"actions.save","guardar","guardar","keep"
+"actions.update","actualizar","actualizar","update"
+"actions.delete","eliminar","eliminar","eliminate"
+"test.counting","contando {{0}} de {{1}}","contando {{0}} de {{1}}","counting {{0}} of {{1}}"

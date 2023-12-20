@@ -25,10 +25,12 @@ const Stack = createNativeStackNavigator<RootStackParams>()
 const Routes = () => {
     const [isDarkMode, setIsDarkMode] = useState(true);
     
-    const authenticated = useSelector((state: RootState) => state.mainReducer.authUser.isAuthenticated);
+    const authenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const toggleDarkMode = () => {
         setIsDarkMode(!isDarkMode);
     };
+    console.log(authenticated,'in routes');
+    
 
     return (
 
@@ -37,8 +39,8 @@ const Routes = () => {
                 <Stack.Navigator initialRouteName='authNavigation' >
 
                     {
-                    // authenticated 
-                    true
+                    authenticated 
+                    // true
                     ?
                         <Stack.Screen name='mainRouteNavigation' component={MainRouteNavigation} options={{ headerShown: false, headerBackButtonMenuEnabled: true, }} />
                         :

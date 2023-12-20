@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button as ButtonPaper, useTheme } from 'react-native-paper'
+import { Button as ButtonPaper, MD3Theme, useTheme } from 'react-native-paper'
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon'
 
 // Añadir los tipos de tamaño que deseas soportar
@@ -9,13 +9,15 @@ type Props = {
     onPress: (e: any) => void
     disabled?: boolean
     loading?: boolean
+    textColor?: string
     label: string
     Icon?: IconSource
-    color?: 'secondary' | 'primary' | 'success' | 'danger' | "tertiary"// Añadir más variantes de color si es necesario
+    color?: 'secondary' | 'primary' | 'success' | 'danger' | "tertiary" | "clear"// Añadir más variantes de color si es necesario
+    type?: 'contained' | 'contained-tonal' | 'elevated' | 'outlined' | "text"
     size?: ButtonSize // Añadir la propiedad de tamaño
 }
 
-const Button = ({ onPress, label, Icon, color, size, disabled, loading }: Props) => {
+const Button = ({ onPress, label, Icon, color, size, disabled, loading, type , textColor }: Props) => {
     const theme = useTheme()
 
     // Función para obtener el color del botón basado en la prop 'color'
@@ -23,6 +25,8 @@ const Button = ({ onPress, label, Icon, color, size, disabled, loading }: Props)
         switch (color) {
             case 'primary':
                 return theme.colors.primary
+            case 'clear':
+                return theme.colors.surface
             case 'tertiary':
                 return theme.colors.onTertiary
             case 'success':
@@ -41,12 +45,12 @@ const Button = ({ onPress, label, Icon, color, size, disabled, loading }: Props)
     return (
         <ButtonPaper
             disabled={disabled}
-            textColor={theme.colors.onSecondary}
+            textColor={textColor? textColor : theme.colors.onSecondary}
             buttonColor={buttonColor}
-            mode="contained"
+            mode={type}
             onPress={onPress}
-            icon={Icon }
-        
+            icon={Icon}
+                        
             loading={loading}
         >
             {label}

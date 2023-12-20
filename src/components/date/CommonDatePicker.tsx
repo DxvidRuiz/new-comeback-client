@@ -7,10 +7,11 @@ type datetype = {
     month: string | number
     year: string | number
     openCalendar: () => void
+    colorText? : string
 
 }
 
-const CommonDatePicker = ({ day, month, year, openCalendar }: datetype) => {
+const CommonDatePicker = ({ day, month, year, openCalendar,colorText }: datetype) => {
 
     const theme = useTheme();
     const styles = style(theme)
@@ -18,13 +19,13 @@ const CommonDatePicker = ({ day, month, year, openCalendar }: datetype) => {
     return (
         <View style={styles.container}>
             <View style={styles.itenContainer}>
-                <Text style={styles.text} >{month}</Text>
+                <Text style={[styles.text,{color: colorText }]} >{month}</Text>
             </View>
             <View style={styles.itenContainer}>
-                <Text style={styles.text} >{day}</Text>
+                <Text style={[styles.text,{color: colorText }]} >{day}</Text>
             </View>
             <View style={styles.itenContainer}>
-                <Text style={styles.text} >{year}</Text>
+                <Text style={[styles.text,{color: colorText }]} >{year}</Text>
             </View>
             <TouchableOpacity style={styles.iconContainer} onPress={openCalendar}>
                 <FontAwesome5 name="calendar" size={24} color={theme.colors.onTertiary} />
@@ -39,25 +40,32 @@ const style = (theme: MD3Theme) => StyleSheet.create({
 
     container: {
         width: "100%",
-        height: 55,
+        height: 40,
         flexDirection: "row",
-        gap: 6
+        gap: 6,        
+
+        borderColor: theme.colors.onSurface
 
 
     },
     itenContainer: {
-        backgroundColor: theme.colors.surface,
+        backgroundColor: theme.colors.inverseOnSurface,
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         borderBottomColor: theme.colors.onTertiary,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+
     },
     iconContainer: {
+        backgroundColor: theme.colors.primary,
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        borderBottomWidth: 1
+        elevation:2
+        // borderWidth: 2,
+        // borderColor: theme.colors.inverseOnSurface,
+
     },
-    text: { color: "white" }
+    text: {  }
 })

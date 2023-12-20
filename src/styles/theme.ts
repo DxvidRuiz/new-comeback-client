@@ -18,7 +18,8 @@ export const lightTheme = {
     background: '#FFFFFF', // Fondo blanco
     onBackground: '#000000', // Texto negro sobre fondo blanco
     surface: '#FFFFFF', // Superficies blancas
-    onSurface: '#000000', // Texto negro sobre superficies blancas
+    onSurface: '#000000', 
+    blackAndWhite: '#000000'// Texto negro sobre superficies blancas
     // Continúa con los demás colores según sea necesario...
   },
 };
@@ -44,6 +45,7 @@ export const darkTheme = {
     onBackground: '#FFFFFF', // Texto blanco sobre fondo oscuro
     surface: '#121212', // Igual que el fondo
     onSurface: '#FFFFFF', // Texto blanco sobre superficie oscura
+    blackAndWhite: '#FFFFFF', // Texto blanco sobre superficie oscura
     // Asegúrate de ajustar el resto de los colores según tus necesidades.
   },
 };

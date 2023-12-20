@@ -1,71 +1,86 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { FormikHelpers, useFormik } from 'formik';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
-import CustomInput from '../../common/buttons/CustomInput';
-import AuthContainer from '../../common/containers/AuthContainer';
-import AuthTitleText from '../../common/text/AuthTitleText';
-import Input from '../../common/input/input';
-import Button from '../../common/buttons/button';
-import MediumText from '../../common/text/MediumText';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store/store';
-import { apiCallThunk } from '../../redux/thunks/apiCallThunk';
-import { passwordValidationSchema, personalDataSchema } from '../../validations/yupSchemas/registerSchema';
-import SmallText from '../../common/text/SmallText';
-import { useFormik } from 'formik';
 import uuid from 'react-native-uuid';
-import { API_ENDPOINTS } from '../../services/api/urlEndpoints/authEnpoint';
-import { METOD_E } from '../../types/apiTypes';
-import { setAccessToken, setAuthentication } from '../../redux/slices/authSlice';
+import { useSelector } from 'react-redux';
+import Button from '../../common/buttons/button';
+import AuthContainer from '../../common/containers/AuthContainer';
+import Input from '../../common/input/input';
+import AuthTitleText from '../../common/text/AuthTitleText';
+import SmallText from '../../common/text/SmallText';
+import { registerUser } from '../../redux/actions/user.actions';
+import { setAuthentication } from '../../redux/slices/authSlice';
+import { refreshUser } from '../../redux/slices/userSlice';
+import { RootState, useAppDispatch } from '../../redux/store/store';
+import { passwordValidationSchema } from '../../validations/yupSchemas/registerSchema';
 
+const initialValues = { password: '', passwordConfirmation: '' }
 
 const RegisterPasswordStep = () => {
 
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
-    const stateData = useSelector((state: RootState) => state.mainReducer.registerForm);
-    // const LASTSTATE = useSelector((state: RootState) => state.mainReducer.registerData);
-    const actual = useSelector((state: RootState) => state.mainReducer.authUser);
+    const stateData = useSelector((state: RootState) => state.registerForm);
+    // const LASTSTATE = useSelector((state: RootState) => state.registerData);
 
-    console.log(actual);
-    // console.log(LASTSTATE);
-    const theme = useTheme();
+
+
+
+
+
+
+
+
+    const onSubmit = async (values: typeof initialValues, { setSubmitting, setFieldError }: FormikHelpers<typeof initialValues>) => {
+        console.log(values);
+        const newuuid = uuid.v4()
+        console.log(newuuid);
+        const dataRecovered = stateData.data
+        const finalData = {
+            ...dataRecovered,
+            id: newuuid,
+            password: values.password
+        }
+
+
+        try {
+            dispatch(registerUser(finalData)).then(response => {
+                if (response.meta.requestStatus === 'fulfilled') {
+                    dispatch(refreshUser(response.payload))
+                    dispatch(setAuthentication(true))
+                }
+                if (response.meta.requestStatus == 'rejected') {
+                    const data = response.payload as any;
+                    if (!data.response) {
+                        setFieldError('submitError', 'Network error: Please check your internet connection and try again.');
+                    } else {
+                        const errorMessage = data.message || 'An unexpected error occurred';
+                        setFieldError('submitError', errorMessage);
+                    }
+                }
+            })
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const formik = useFormik({
-        initialValues: { password: '', passwordConfirmation: '' },
+        initialValues,
         validationSchema: passwordValidationSchema,
-        onSubmit: async (values, { setSubmitting, setFieldError }) => {
-            console.log(values);
-            const newuuid = uuid.v4()
-            console.log(newuuid);
-            const dataRecovered = stateData.data
-            const finalData = {
-                ...dataRecovered,
-                id: newuuid,
-                password: values.password
-            }
-
-
-            try {
-                const registerResponse = await dispatch(apiCallThunk({
-                    base_url: API_ENDPOINTS.URL_BASE, endpoint: API_ENDPOINTS.REGISTER,
-                    method: METOD_E.POST, data: finalData
-                })).unwrap();
-
-                console.log("respuesta al registro", registerResponse);
-
-                dispatch(setAuthentication(true));
-                dispatch(setAccessToken(registerResponse.token));
-
-
-            } catch (error) {
-                console.log(error);
-
-            }
-        },
+        onSubmit
     });
     //  styles ------------------------------------------------------- 
+    const theme = useTheme();
     const styles = style(theme)
+
+
+
+
+
+
 
     return (
 
@@ -116,6 +131,7 @@ const RegisterPasswordStep = () => {
         </AuthContainer>
     )
 }
+
 
 export default RegisterPasswordStep
 

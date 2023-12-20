@@ -1,0 +1,16 @@
+{
+    "actions": {
+        "save": "Guardar",
+        "update": "actualizar",
+        "delete": "eliminar",
+        "change_language": "Cambiar lenguaje"
+    },
+    "test": {
+        "counting": "contando {{0}} de {{1}}"
+    },
+    "label": {
+        "email": "Correo electronico",
+        "password": "Contraseña",
+        "change": "Cambiar"
+    }
+}

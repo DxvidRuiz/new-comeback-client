@@ -1,104 +1,122 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, } from 'react-native'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
-import AuthContainer from '../../common/containers/AuthContainer';
-import AuthTitleText from '../../common/text/AuthTitleText';
-import Input from '../../common/input/input';
-import Button from '../../common/buttons/button';
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store/store';
-import { apiCallThunk } from '../../redux/thunks/apiCallThunk';
+import Button from '../../common/buttons/button';
+import AuthContainer from '../../common/containers/AuthContainer';
+import Input from '../../common/input/input';
+import AuthTitleText from '../../common/text/AuthTitleText';
+import { RootState, useAppDispatch } from '../../redux/store/store';
+
 import { debounce } from 'lodash';
 
-import { personalDataSchema, userDataSchema } from '../../validations/yupSchemas/registerSchema';
-import { useFormik } from 'formik';
-import { API_ENDPOINTS } from '../../services/api/urlEndpoints/authEnpoint';
-import { METOD_E } from '../../types/apiTypes';
-import { setUserData } from '../../redux/slices/registerFormSlice';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParams } from '../../types/types';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { FormikHelpers, useFormik } from 'formik';
+import { checkEmail, checkUsername } from '../../redux/actions/user.actions';
+import { setUserData } from '../../redux/slices/registerFormSlice';
+import { RootStackParams } from '../../types/types';
+import { userDataSchema } from '../../validations/yupSchemas/registerSchema';
 
 type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'registerUserData'>;
 
 
 
 const RegisterUserData = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const stateData = useSelector((state: RootState) => state.mainReducer.registerForm);
+    const dispatch = useAppDispatch();
+
+    const partialUserData = useSelector((state: RootState) => state.registerData)
+
+    const stateData = useSelector((state: RootState) => state.registerForm);
     const theme = useTheme();
     const styles = style(theme)
     const navigation = useNavigation<AuthNavigationProp>()
     // Save register information on redux storage using formik 
+    const initialValues = { username: '', email: '' }
+
+
+
+
+    const onSubmit = async (values: typeof initialValues, { setSubmitting }: FormikHelpers<typeof initialValues>) => {
+        try {
+            console.log(stateData);
+            // last fields validation 
+            await Promise.all([
+                debouncedCheckEmail(values.email),
+                debouncedCheckUsername(values.username),
+            ]);
+            dispatch(setUserData({ email: values.email.trim(), username: values.username.trim() }));
+            navigation.navigate("registerPassword")
+            console.log(stateData);
+
+        } catch (error) {
+
+            throw new Error("message:", error)
+
+        }
+    }
+
+
     const formik = useFormik({
-        initialValues: { username: '', email: '' },
+        initialValues: initialValues,
         validationSchema: userDataSchema,
-        onSubmit: async (values, { setSubmitting, setFieldError }) => {
-            try {
-                console.log(stateData);
-                // last fields validation 
-                await Promise.all([
-                    debouncedCheckEmail(values.email),
-                    debouncedCheckUsername(values.username),
-                ]);
-                dispatch(setUserData({ email: values.email.trim(), username: values.username.trim() }));
-                navigation.navigate("registerPassword")
-                console.log(stateData);
-
-            } catch (error) {
-
-                throw new Error("message:", error)
-
-            }
-        },
+        onSubmit
 
     });
-
-
-
-    // Existent email validation ---------------------
     const debouncedCheckEmail = useMemo(() =>
         debounce(async (email) => {
-
-            console.log(email);
+            const emailToCheck = { "email": email };
             try {
-                const emailResponse = await dispatch(apiCallThunk({
-                    base_url: API_ENDPOINTS.URL_BASE, endpoint: API_ENDPOINTS.CHECK_EMAIL,
-                    method: METOD_E.POST, data: { email: email }
-                })).unwrap();
-                if (emailResponse) {
-                    formik.setFieldError("email", "Email already in use, please try another")
-                    console.log(emailResponse.statusCode);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }, 500), []); // 500 ms de retrasom
+                if (!formik.errors.email) {
+                    const emailResponse = await dispatch(checkEmail(emailToCheck));
 
-    // Existent username  validation ---------------------
-
-    const debouncedCheckUsername = useMemo(() =>
-
-        debounce(async (username) => {
-            try {
-                if (!formik.errors.username) {
-                    const usernameResponse = await dispatch(apiCallThunk({
-                        base_url: API_ENDPOINTS.URL_BASE, endpoint: API_ENDPOINTS.CHECK_USERNAME,
-                        data: { username: username }, method: METOD_E.POST
-                    })).unwrap();
-                    if (usernameResponse) {
-                        formik.setFieldError("username", "Username already in use, please try another");
-                        console.log(formik.errors.email);
+                    if (emailResponse.payload) {
+                        if (emailResponse.payload.statusCode === 200) {
+                            formik.setFieldError("email", "Email already in use, please try another");
+                            console.log(formik.errors.email);
+                        } else if (emailResponse.payload.statusCode === 404) {
+                            console.log("Email does not exist");
+                        } else {
+                            console.log(`Unexpected status code: ${emailResponse.payload.statusCode}`);
+                        }
+                    } else {
+                        console.log("Unexpected payload:", emailResponse.payload);
                     }
                 }
-
             } catch (error) {
-                console.log(error);
-
+                // Aquí puedes manejar otros errores que puedan ocurrir durante la llamada
+                console.log("Error during email validation:", error);
             }
+        }, 500), [dispatch, formik.errors.email]);
 
-        }, 500), [])
+
+    // Existent username  validation ---------------------
+    const debouncedCheckUsername = useMemo(() =>
+        debounce(async (username) => {
+            const usernameToCheck = { "username": username };
+            try {
+                if (!formik.errors.username) {
+                    const usernameResponse = await dispatch(checkUsername(usernameToCheck));
+
+
+                    if (usernameResponse.payload) {
+                        if (usernameResponse.payload.statusCode === 200) {
+                            formik.setFieldError("username", "Username already in use, please try another");
+                            console.log(formik.errors.username);
+                        } else if (usernameResponse.payload.statusCode === 404) {
+                            console.log("Username does not exist");
+                        } else {
+                            console.log(`Unexpected status code: ${usernameResponse.payload.statusCode}`);
+                        }
+                    } else {
+                        console.log("Unexpected payload:", usernameResponse.payload);
+                    }
+                }
+            } catch (error) {
+                // Aquí puedes manejar otros errores que puedan ocurrir durante la llamada
+                console.log("Error during username validation:", error);
+            }
+        }, 500), [dispatch, formik.errors.username]);
 
 
 
@@ -126,7 +144,7 @@ const RegisterUserData = () => {
                             label='Email'
                             formik={formik}
                             name='email'
-                            keyboardType='default'
+                            keyboardType='email-address'
                             externalOnChangeText={debouncedCheckEmail}
                         />
                         <Input

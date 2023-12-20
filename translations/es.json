@@ -1,0 +1,10 @@
+{
+    "actions": {
+        "save": "guardar",
+        "update": "actualizar",
+        "delete": "eliminar"
+    },
+    "test": {
+        "counting": "contando {{0}} de {{1}}"
+    }
+}

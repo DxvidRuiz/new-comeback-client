@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MD3Theme, useTheme } from 'react-native-paper';
 import CustomInput from '../../common/buttons/CustomInput';
 import AuthContainer from '../../common/containers/AuthContainer';
@@ -13,62 +13,65 @@ import Button from '../../common/buttons/button';
 import MediumText from '../../common/text/MediumText';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store/store';
-import { apiCallThunk } from '../../redux/thunks/apiCallThunk';
+import { AppDispatch, RootState, useAppDispatch } from '../../redux/store/store';
 import { loginUserType } from '../../types/loginUserType';
 import axios from 'axios';
 import { API_ENDPOINTS } from '../../services/api/urlEndpoints/authEnpoint';
 import { METOD_E } from '../../types/apiTypes';
 import BrandText from '../../common/text/BrandText';
 import { SvgUri } from 'react-native-svg';
-import { setAccessToken, setAuthentication } from '../../redux/slices/authSlice';
+import { setAccessToken, setAuthentication, } from '../../redux/slices/authSlice';
+import { getAsyncStorage } from '../../localStorage/GetAsyncStorage';
+import { AsyncStorageKeys } from '../../localStorage/enum/asyncStorageKeys';
+import { refreshUser } from '../../redux/slices/userSlice';
+import { loginUser } from '../../redux/actions/auth.actions';
+
+const initialValues = { email: '', password: '' }
 
 const Login = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const myApiState = useSelector((state: RootState) => state.mainReducer.authUser);
+  const dispatch = useAppDispatch();
+  const myApiState = useSelector((state: RootState) => state.auth);
 
-  console.log("es autenticado ",myApiState);
+  console.log("es autenticado ", myApiState);
 
   const theme = useTheme();
-  const formik = useFormik({
-    initialValues: { email: '', password: '' },
-    validationSchema: loginSchema,
-    onSubmit: async (values, { setSubmitting, setFieldError }) => {
 
-      const loginRequest = {
-        base_url: API_ENDPOINTS.URL_BASE,
-        endpoint: API_ENDPOINTS.USER_LOGIN,
-        method: METOD_E.POST,
-        data: values, // los valores del formulario se pasan directamente
-      };
+  const onSubmit = async (values: typeof initialValues, { setSubmitting, setFieldError }) => {
 
-      console.log(loginRequest);
-
-
-      try {
-        const response = await dispatch(
-          apiCallThunk(loginRequest // Pasas los valores del formulario directamente
-          )
-        ).unwrap();
-        console.log('Login exitoso:', response);
-        dispatch(setAuthentication(true));
-        dispatch(setAccessToken(response.token));
-      } catch (error) {
-        // Verifica si es un error de red y maneja la excepción
-        if (!error.response) {
-          console.log('Network Error', error);
-
+    dispatch(loginUser(values)).then(response => {
+      if(response.meta.requestStatus === 'fulfilled'){
+        dispatch(refreshUser(response.payload))
+      }
+      if (response.meta.requestStatus == 'rejected') {
+        const data = response.payload as any;
+        if (!data.response) {
           setFieldError('submitError', 'Network error: Please check your internet connection and try again.');
         } else {
-          // El servidor respondió con un estado fuera del rango 2xx
-          const errorMessage = error.response.data.message || 'An unexpected error occurred';
+          const errorMessage = data.message || 'An unexpected error occurred';
           setFieldError('submitError', errorMessage);
         }
-      } finally {
-        setSubmitting(false);
       }
-    },
-  });
+    })
+  }
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: loginSchema,
+    onSubmit,
+    enableReinitialize: true
+  })
+
+  useEffect(() => {
+    if (__DEV__) {
+      formik.setValues({
+        email: 'ooooo@example.com',
+        password: 'Contraseñaperla1#'
+      })
+    }
+  }, [])
+
+
+
 
   //  styles ------------------------------------------------------- 
   const styles = style(theme)

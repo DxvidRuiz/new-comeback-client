@@ -7,6 +7,7 @@ import { useTheme } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import MessagesScreen from '../../screens/MainAppScreens/MessageScreens/MessagesScreen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ProfileNavigation from './ProfileNavigation';
 const Tab = createBottomTabNavigator<AppTabParams>();
 const MainRouteNavigation = () => {
 
@@ -17,7 +18,8 @@ const MainRouteNavigation = () => {
         >
             <Tab.Screen name="feed" component={FeedScreen} options={{ tabBarIcon: ({ focused }) => (<Octicons name="home" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }} />
             <Tab.Screen name="messages" component={MessagesScreen} options={{ tabBarIcon: ({ focused }) => (<MaterialCommunityIcons name="message-reply-outline" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }}/>
-            <Tab.Screen name="profile" component={ProfileScreen} options={{  headerShown: true , headerTransparent: true, headerTitleAlign:"center", headerStatusBarHeight: 2,  tabBarIcon: ({ focused }) => (<Octicons name="person" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }}/>
+
+            <Tab.Screen name="profileNavigation" component={ProfileNavigation} options={{  headerShown: false , headerTransparent: true,  tabBarIcon: ({ focused }) => (<Octicons name="person" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }}/>
             
         </Tab.Navigator>
     )

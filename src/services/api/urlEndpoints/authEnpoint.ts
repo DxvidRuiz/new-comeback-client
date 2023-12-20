@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
     "http://192.168.0.104:3000/api/v1/",
   USER_LOGIN: "auth/login",
   REGISTER: "auth/register",
+  USER: "users",
   CHECK_USERNAME: "auth/checkusername",
   CHECK_EMAIL: "auth/checkemail",
   COMMENTS: "/comments",

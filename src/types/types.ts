@@ -12,12 +12,22 @@ export type RootStackParams = {
   registerMethod: undefined;
   feed: undefined;
   messages: undefined;
+
+  editProfile: undefined;
+
+  editPersonalData: undefined;
+  editProfileData: undefined;
+  editAuthData: undefined;
+
+  profileNavigation: undefined;
+  profile: undefined;
 };
 
 export type AppTabParams = {
   feed: undefined;
   profile: undefined;
   messages: undefined;
+  profileNavigation: undefined;
 };
 
 // Definir tipos de navegación para cada pantalla
@@ -27,10 +37,26 @@ export type RegisterUserDataScreenNavigationProp = NativeStackNavigationProp<
   RootStackParams,
   "registerUserData"
 >;
+
+export type EditPersonalDataScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParams,
+  "editPersonalData"
+>;
+
+export type EditProfileDataScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParams,
+  "editProfileData"
+>;
+export type EditAuthDataScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParams,
+  "editAuthData"
+>;
+
 export type RegisterPasswordScreenNavigationProp = NativeStackNavigationProp<
   RootStackParams,
   "registerPassword"
 >;
+
 export type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParams,
   "login"
@@ -51,6 +77,14 @@ export type RegisterMethodScreenNavigationProp = NativeStackNavigationProp<
   RootStackParams,
   "registerMethod"
 >;
+export type EditProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParams,
+  "editProfile"
+>;
+export type profileNavigationProp = NativeStackNavigationProp<
+  RootStackParams,
+  "profileNavigation"
+>;
 
 // Tab navigaitors
 export type FeedTabNavigationProp = BottomTabNavigationProp<
@@ -64,4 +98,8 @@ export type MessagesTabNavigationProp = BottomTabNavigationProp<
 export type ProfileTabNavigationProp = BottomTabNavigationProp<
   AppTabParams,
   "profile"
+>;
+export type ProfileNavigationTabNavigationProp = BottomTabNavigationProp<
+  AppTabParams,
+  "profileNavigation"
 >;

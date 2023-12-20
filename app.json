@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "hermes",
     "name": "new-comeback-app",
     "slug": "new-comeback-app",
     "version": "1.0.0",

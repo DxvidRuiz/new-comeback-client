@@ -1,24 +1,23 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { MD3Theme, useTheme } from 'react-native-paper';
-import AuthContainer from '../../common/containers/AuthContainer';
-import { Formik, useFormik } from 'formik';
-import AuthTitleText from '../../common/text/AuthTitleText';
-import Input from '../../common/input/input';
-import Button from '../../common/buttons/button';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store/store';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { FormikHelpers, useFormik } from 'formik';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { MD3Theme, useTheme } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import Button from '../../common/buttons/button';
+import AuthContainer from '../../common/containers/AuthContainer';
+import Input from '../../common/input/input';
+import AuthTitleText from '../../common/text/AuthTitleText';
+import { RootState, useAppDispatch } from '../../redux/store/store';
 
-import CommonDatePicker from '../../components/date/CommonDatePicker';
-import { personalDataSchema } from '../../validations/yupSchemas/registerSchema';
-import SmallText from '../../common/text/SmallText';
-import { setPersonalData } from '../../redux/slices/registerFormSlice';
-import GenderSelection from '../../components/PersonalData/GenderSelection';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParams } from '../../types/types';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import SmallText from '../../common/text/SmallText';
+import GenderSelection from '../../components/PersonalData/GenderSelection';
+import CommonDatePicker from '../../components/date/CommonDatePicker';
+import { setPersonalData } from '../../redux/slices/registerFormSlice';
+import { RootStackParams } from '../../types/types';
+import { personalDataSchema } from '../../validations/yupSchemas/registerSchema';
 
 
 
@@ -26,8 +25,8 @@ type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'registerPe
 
 
 const RegisterPersonalData = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const stateData = useSelector((state: RootState) => state.mainReducer.registerForm);
+  const dispatch = useAppDispatch();
+  const stateData = useSelector((state: RootState) => state.registerForm);
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const [date, setDate] = useState(new Date(1598051730000));
   const [show, setShow] = useState(false);
@@ -35,17 +34,34 @@ const RegisterPersonalData = () => {
 
   const navigation = useNavigation<AuthNavigationProp>()
 
-  // const stateData = useSelector((state: RootState) => state.mainReducer.registerData);
+  // const stateData = useSelector((state: RootState) => state.registerData);
 
   // --------------------------------- max date validation
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 12); // Resta 12 años
 
+  const initialValues = { name: '', lastname: '', dateOfBirth: "", gender: null }
+
+
+
+
+  const onSubmit = async (values: typeof initialValues, { setSubmitting }: FormikHelpers<typeof initialValues>) => {
+    try {
+      dispatch(setPersonalData({ name: values.name.trim(), lastname: values.lastname.trim(), dateOfBirth: values.dateOfBirth, gender: values.gender.trim() }));
+      navigation.navigate("registerUserData")
+    } catch (error) {
+
+      throw new Error("message:", error)
+    }
+
+  }
+  const theme = useTheme();
+  const formik = useFormik({
+    initialValues,
+    validationSchema: personalDataSchema,
+    onSubmit
+  });
   const onChange = async (event: DateTimePickerEvent, selectedDate?: Date) => {
-
-
-    console.log(event);
-
 
     if (event) {
       setDate(selectedDate);
@@ -68,40 +84,7 @@ const RegisterPersonalData = () => {
       setShow(false);
     }
   };
-  useEffect(() => {
-    // This code will run only when `date` changes.
-    // const day = date.getDate().toString();
-    // const monthIndex = date.getMonth();
-    // const year = date.getFullYear().toString();
-    // const month = monthNames[monthIndex];
 
-    // const newDatePickerValues = { day, month, year };
-    // setDatePickerValues(newDatePickerValues);
-
-    // Update formik values or perform other actions
-
-
-  }, []);
-
-
-  console.log(stateData);
-
-  const theme = useTheme();
-  const formik = useFormik({
-    initialValues: { name: '', lastname: '', dateOfBirth: "", gender: null },
-    validationSchema: personalDataSchema,
-    onSubmit: async (values, { setSubmitting, setFieldError }) => {
-      try {
-        // console.log(stateData);
-
-        dispatch(setPersonalData({ name: values.name.trim(), lastname: values.lastname.trim(), dateOfBirth: values.dateOfBirth, gender: values.gender.trim() }));
-        navigation.navigate("registerUserData")
-      } catch (error) {
-
-        throw new Error("message:", error)
-      }
-    },
-  });
   //  styles ------------------------------------------------------- 
   const styles = style(theme)
 
@@ -146,7 +129,7 @@ const RegisterPersonalData = () => {
               <SmallText fontWeight={"400"} color={theme.colors.onTertiary} text={"(12 years or older)"} />
             </View>
 
-            <CommonDatePicker day={datePickerValues.day} month={datePickerValues.month} year={datePickerValues.year} openCalendar={() => setShow(true)} />
+            <CommonDatePicker colorText={theme.colors.onSurface} day={datePickerValues.day} month={datePickerValues.month} year={datePickerValues.year} openCalendar={() => setShow(true)} />
 
           </View>
 
