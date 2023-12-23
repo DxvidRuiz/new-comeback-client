@@ -1,20 +1,18 @@
-import axios, { Axios } from "axios";
-import { ApiRequest_I } from "../../../types/apiTypes";
 import { getAsyncStorage } from "../../../localStorage/GetAsyncStorage";
 import { AsyncStorageKeys } from "../../../localStorage/enum/asyncStorageKeys";
-import { API_ENDPOINTS } from "./authEnpoint";
 import axiosInstance from "./Axios";
+import { API_ENDPOINTS } from "./authEnpoint";
 
 const TIMEOUT = 10000; // 10 segundos de timeout
 
 export class Api {
-  static url = API_ENDPOINTS.URL_BASE 
-  
-  static  get = async (path: string) =>{
-    try{
+  static url = API_ENDPOINTS.URL_BASE
+
+  static get = async (path: string) => {
+    try {
       const response = await axiosInstance.get(`${path}`)
       return response.data;
-    }catch(error){
+    } catch (error) {
       let errorMessage = "An unexpected error occurred";
 
       if (error.response) {
@@ -31,7 +29,7 @@ export class Api {
         // Error en la configuración de la solicitud
         errorMessage = `Request Configuration Error: ${error.message}`;
       }
-  
+
       // Puedes elegir lanzar un error o simplemente devolver un objeto de error
       throw new Error(errorMessage);
     }
@@ -44,17 +42,17 @@ export class Api {
 
   }
 
-  static  patch = async (path: string, data: any) =>{
-    try{
-      const token  = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN );
-      
-      const response = await axiosInstance.patch(`${path}`,data,{
+  static patch = async (path: string, data: any) => {
+    try {
+      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN);
+
+      const response = await axiosInstance.patch(`${path}`, data, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       return response.data;
-    }catch(error){
+    } catch (error) {
       let errorMessage = "An unexpected error occurred";
 
       if (error.response) {
@@ -71,23 +69,23 @@ export class Api {
         // Error en la configuración de la solicitud
         errorMessage = `Request Configuration Error: ${error.message}`;
       }
-  
+
       // Puedes elegir lanzar un error o simplemente devolver un objeto de error
       throw new Error(errorMessage);
     }
   }
-  
-  static  post = async (path: string, data: any) =>{
-    try{
-      const token  = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN );
-      
-      const response = await axiosInstance.post(`${path}`,data,{
+
+  static post = async (path: string, data: any) => {
+    try {
+      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN);
+
+      const response = await axiosInstance.post(`${path}`, data, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       return response.data;
-    }catch(error){
+    } catch (error) {
       let errorMessage = "An unexpected error occurred";
 
       if (error.response) {
@@ -104,7 +102,7 @@ export class Api {
         // Error en la configuración de la solicitud
         errorMessage = `Request Configuration Error: ${error.message}`;
       }
-  
+
       // Puedes elegir lanzar un error o simplemente devolver un objeto de error
       throw new Error(errorMessage);
     }

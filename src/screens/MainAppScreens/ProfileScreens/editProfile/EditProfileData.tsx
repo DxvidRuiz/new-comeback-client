@@ -4,24 +4,24 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../../common/buttons/button';
-import AuthContainer from '../../../common/containers/AuthContainer';
-import Input from '../../../common/input/input';
-import AuthTitleText from '../../../common/text/AuthTitleText';
-import { AppDispatch, RootState } from '../../../redux/store/store';
+import Button from '../../../../common/buttons/button';
+import AuthContainer from '../../../../common/containers/AuthContainer';
+import Input from '../../../../common/input/input';
+import AuthTitleText from '../../../../common/text/AuthTitleText';
+import { AppDispatch, RootState } from '../../../../redux/store/store';
 
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import SmallText from '../../../common/text/SmallText';
-import GenderSelection from '../../../components/PersonalData/GenderSelection';
-import CommonDatePicker from '../../../components/date/CommonDatePicker';
-import { setPersonalData } from '../../../redux/slices/registerFormSlice';
-import { RootStackParams } from '../../../types/types';
-import { personalDataSchema } from '../../../validations/yupSchemas/registerSchema';
+import SmallText from '../../../../common/text/SmallText';
+import GenderSelection from '../../../../components/PersonalData/GenderSelection';
+import CommonDatePicker from '../../../../components/date/CommonDatePicker';
+import { setPersonalData } from '../../../../redux/slices/registerFormSlice';
+import { ProfileNavigationProps } from '../../../../types/NavigationParams/profileParams';
+import { personalDataSchema } from '../../../../validations/yupSchemas/registerSchema';
 
 
 
-type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'registerPersonalData'>;
+type editProfileataProp = NativeStackNavigationProp<ProfileNavigationProps, 'editPersonalData'>;
 
 
 const EditProfileData = () => {
@@ -32,7 +32,7 @@ const EditProfileData = () => {
     const [show, setShow] = useState(false);
     const [datePickerValues, setDatePickerValues] = useState({ day: "Day", month: "Month", year: "Year" });
 
-    const navigation = useNavigation<AuthNavigationProp>()
+    const navigation = useNavigation<editProfileataProp>()
 
     // const stateData = useSelector((state: RootState) => state.registerData);
     const initialValues = { name: '', lastname: '', dateOfBirth: "", gender: null }
@@ -88,7 +88,7 @@ const EditProfileData = () => {
             // console.log(stateData);
 
             dispatch(setPersonalData({ name: values.name.trim(), lastname: values.lastname.trim(), dateOfBirth: values.dateOfBirth, gender: values.gender.trim() }));
-            navigation.navigate("registerUserData")
+            navigation.navigate("profileData")
         } catch (error) {
 
             throw new Error("message:", error)

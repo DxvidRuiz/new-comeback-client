@@ -1,14 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Welcome from "../../screens/authenticationScreens/Welcome";
+import { useTheme } from "react-native-paper";
 import Login from "../../screens/authenticationScreens/Login";
+import RegisterMethod from "../../screens/authenticationScreens/RegisterMethodScreen";
+import RegisterPasswordStep from "../../screens/authenticationScreens/RegisterPasswordStep";
 import RegisterPersonalData from "../../screens/authenticationScreens/RegisterPersonalData";
 import RegisterUserData from "../../screens/authenticationScreens/RegisterUserData";
-import RegisterPasswordStep from "../../screens/authenticationScreens/RegisterPasswordStep";
-import { RootStackParams } from "../../types/types";
-import { useTheme } from "react-native-paper";
-import RegisterMethod from "../../screens/authenticationScreens/RegisterMethodScreen";
+import Welcome from "../../screens/authenticationScreens/Welcome";
+import { AuthNavigationProps } from "../../types/NavigationParams/AuthNavigationParams";
 
-const Stack = createNativeStackNavigator<RootStackParams>()
+const Stack = createNativeStackNavigator<AuthNavigationProps>()
 
 const AuthNavigation = () => {
     const theme = useTheme();

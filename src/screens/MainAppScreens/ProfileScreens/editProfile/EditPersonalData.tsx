@@ -6,23 +6,24 @@ import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import Button from '../../../common/buttons/button';
-import MainContainer from '../../../common/containers/MainContainer';
-import Input from '../../../common/input/input';
-import SmallText from '../../../common/text/SmallText';
-import CommonDatePicker from '../../../components/date/CommonDatePicker';
-import GenderSelection from '../../../components/PersonalData/GenderSelection';
-import { RootState, useAppDispatch } from '../../../redux/store/store';
-import { RootStackParams } from '../../../types/types';
-import UserData_I from '../../../types/userDataInterface';
-import { personalDataSchema } from '../../../validations/yupSchemas/registerSchema';
+import Button from '../../../../common/buttons/button';
+import MainContainer from '../../../../common/containers/MainContainer';
+import Input from '../../../../common/input/input';
+import SmallText from '../../../../common/text/SmallText';
+import GenderSelection from '../../../../components/PersonalData/GenderSelection';
+import CommonDatePicker from '../../../../components/date/CommonDatePicker';
+import { RootState, useAppDispatch } from '../../../../redux/store/store';
+import UserData_I from '../../../../types/userDataInterface';
+import { personalDataSchema } from '../../../../validations/yupSchemas/registerSchema';
 // import { updateUser } from '../../../redux/slices/editUserDataSlice';
 
 import moment from 'moment';
-import { updateUser } from '../../../redux/actions/user.actions';
+import { useTranslation } from 'react-i18next';
+import { updateUser } from '../../../../redux/actions/user.actions';
+import { ProfileNavigationProps } from '../../../../types/NavigationParams/profileParams';
 
 
-type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'registerPersonalData'>;
+type editPersonalDataProp = NativeStackNavigationProp<ProfileNavigationProps, 'editPersonalData'>;
 
 const initialValues = {
     name: '',
@@ -37,6 +38,8 @@ maxDate.setFullYear(maxDate.getFullYear() - 12);
 
 
 const EditPersonalData = () => {
+    const { t } = useTranslation()
+
     const dispatch = useAppDispatch()
     const { loading, user: data } = useSelector((state: RootState) => state.user)
     const stateData = useSelector((state: RootState) => state.registerForm);
@@ -46,7 +49,7 @@ const EditPersonalData = () => {
     const [datePickerValues, setDatePickerValues] = useState({ day: "Day", month: "Month", year: "Year" });
     const [selectedGender, setSelectedGender] = useState<string>(null); // Estado para el género seleccionado
     console.log(data, 'niier----');
-    const navigation = useNavigation<AuthNavigationProp>()
+    const navigation = useNavigation<editPersonalDataProp>()
 
     // const stateData = useSelector((state: RootState) => state.registerData);
 
@@ -105,7 +108,7 @@ const EditPersonalData = () => {
                     "Changes saved",
                     "Personal data has been updated",
                     [
-                        { text: 'OK', onPress: () => navigation.navigate("editProfile") },
+                        // { text: 'OK', onPress: () => navigation.navigate("editProfile") },
                     ],
                     { cancelable: false }
                 );

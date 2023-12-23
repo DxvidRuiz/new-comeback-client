@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
@@ -8,11 +9,12 @@ import AuthContainer from '../../common/containers/AuthContainer';
 import AuthTitleText from '../../common/text/AuthTitleText';
 import MediumText from '../../common/text/MediumText';
 import { AppDispatch } from '../../redux/store/store';
-import { AuthNavigationScreenNavigationProp } from '../../types/types';
+import { AuthNavigationProps } from '../../types/NavigationParams/AuthNavigationParams';
 
+type MethodNavigationProp = NativeStackNavigationProp<AuthNavigationProps>;
 
 const RegisterMethod = () => {
-    const navigation = useNavigation<AuthNavigationScreenNavigationProp>()
+    const navigation = useNavigation<MethodNavigationProp>()
 
 
     const theme = useTheme();

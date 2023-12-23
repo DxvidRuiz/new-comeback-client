@@ -9,30 +9,28 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { personalDataSchema } from '../../..//validations/yupSchemas/registerSchema';
-import ListButton from '../../../common/buttons/ListButton';
-import MainContainer from '../../../common/containers/MainContainer';
-import { setPersonalData } from '../../../redux/slices/registerFormSlice';
-import { AppDispatch, RootState } from '../../../redux/store/store';
-import { RootStackParams } from '../../../types/types';
+import ListButton from '../../../../common/buttons/ListButton';
+import MainContainer from '../../../../common/containers/MainContainer';
+import { setPersonalData } from '../../../../redux/slices/registerFormSlice';
+import { AppDispatch, RootState } from '../../../../redux/store/store';
+import { ProfileNavigationProps } from '../../../../types/NavigationParams/profileParams';
+import { personalDataSchema } from '../../../../validations/yupSchemas/registerSchema';
 
 
 
-type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'editProfile'>;
+type EditAuthDataNavigationProp = NativeStackNavigationProp<ProfileNavigationProps, 'editAuthData'>;
 
 
 const EditAuthData = () => {
+
     const { t } = useTranslation()
-
     const { loading, user: data } = useSelector((state: RootState) => state.user)
-
+    const [isChangePasswordModalVisible, setChangePasswordModalVisible] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
     const stateData = useSelector((state: RootState) => state.registerForm);
-    const [date, setDate] = useState(new Date(1598051730000));
     const [show, setShow] = useState(false);
-    const [datePickerValues, setDatePickerValues] = useState({ day: "Day", month: "Month", year: "Year" });
 
-    const navigation = useNavigation<AuthNavigationProp>()
+    const navigation = useNavigation<EditAuthDataNavigationProp>()
 
 
     // const stateData = useSelector((state: RootState) => state.registerData);
@@ -62,7 +60,7 @@ const EditAuthData = () => {
                 // console.log(stateData);
 
                 dispatch(setPersonalData({ name: values.name.trim(), lastname: values.lastname.trim(), dateOfBirth: values.dateOfBirth, gender: values.gender.trim() }));
-                navigation.navigate("registerUserData")
+                // navigation.navigate("registerUserData")
             } catch (error) {
 
                 throw new Error("message:", error)
@@ -73,18 +71,21 @@ const EditAuthData = () => {
     const styles = style(theme)
 
     return (
-
         <MainContainer>
-
             <Text style={{ color: "white" }}> {JSON.stringify(formik.errors)}</Text>
             <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
                 <View style={styles.content} >
-
                     <View style={styles.inputContainer}>
-                        <ListButton onPress={() => { navigation.navigate("editPersonalData") }} text={t("label.email")} rightIcon={<Text style={[styles.icono, { marginRight: 15 }]}>{t("label.change")}</Text>} />
-                        <ListButton onPress={() => { navigation.navigate("editProfileData") }} text={t("label.password")} rightIcon={<Text style={[styles.icono, { marginRight: 15 }]}>{t("label.change")}</Text>} />
+                        <ListButton
+                            onPress={() => navigation.navigate("editProfile")
+                            }
+                            text={t("label.email")}
+                            rightIcon={<Text style={[styles.icono, { marginRight: 15 }]}>{t("label.change")}</Text>} />
+                        <ListButton
+                            onPress={() => navigation.navigate("editPassword")}
+                            text={t("label.password")}
+                            rightIcon={<Text style={[styles.icono, { marginRight: 15 }]}>{t("label.change")}</Text>} />
                     </View>
-
                 </View>
             </View>
         </MainContainer>

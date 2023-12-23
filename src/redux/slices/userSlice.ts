@@ -1,9 +1,9 @@
 // features/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AsyncStorageKeys } from "../../localStorage/enum/asyncStorageKeys";
+import { saveAsyncStorage } from "../../localStorage/SaveAsyncStorage";
 import UserData_I from "../../types/userDataInterface";
 import { checkEmail, registerUser, updateUser } from "../actions/user.actions";
-import { saveAsyncStorage } from "../../localStorage/SaveAsyncStorage";
-import { AsyncStorageKeys } from "../../localStorage/enum/asyncStorageKeys";
 
 interface user_i {
   user: UserData_I;
@@ -26,6 +26,7 @@ export const userSlice = createSlice({
     refreshUser: (state, { payload }: PayloadAction<Partial<user_i>>) => {
       if (state.user) {
         state.user = payload.user;
+
       }
     },
   },
@@ -39,8 +40,6 @@ export const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.error = null;
-        saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, action.payload.token);
-
       })
       .addCase(checkEmail.rejected, (state, action) => {
         state.loading = false;

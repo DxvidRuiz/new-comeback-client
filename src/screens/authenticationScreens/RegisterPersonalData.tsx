@@ -16,7 +16,7 @@ import SmallText from '../../common/text/SmallText';
 import GenderSelection from '../../components/PersonalData/GenderSelection';
 import CommonDatePicker from '../../components/date/CommonDatePicker';
 import { setPersonalData } from '../../redux/slices/registerFormSlice';
-import { RootStackParams } from '../../types/types';
+import { RootStackParams } from '../../types/NavigationParams/AppTabNavigationProps';
 import { personalDataSchema } from '../../validations/yupSchemas/registerSchema';
 
 

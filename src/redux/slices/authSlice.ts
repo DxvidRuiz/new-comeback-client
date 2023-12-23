@@ -1,8 +1,7 @@
 // features/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { saveAsyncStorage } from "../../localStorage/SaveAsyncStorage";
-import UserData_I from "../../types/userDataInterface";
 import { AsyncStorageKeys } from "../../localStorage/enum/asyncStorageKeys";
+import { saveAsyncStorage } from "../../localStorage/SaveAsyncStorage";
 import { loginUser } from "../actions/auth.actions";
 
 
@@ -36,7 +35,7 @@ export const authSlice = createSlice({
     setAccessToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
     },
-    logout(state){
+    logout(state) {
       state.isAuthenticated = false;
       saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, undefined);
     }
@@ -50,7 +49,7 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.isAuthenticated = true;
-        state.error = null;        
+        state.error = null;
         saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
