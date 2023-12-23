@@ -15,7 +15,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FormikHelpers, useFormik } from 'formik';
 import { checkEmail, checkUsername } from '../../redux/actions/user.actions';
 import { setUserData } from '../../redux/slices/registerFormSlice';
-import { RootStackParams } from '../../types/types';
+import { RootStackParams } from '../../types/NavigationParams/AppTabNavigationProps';
 import { userDataSchema } from '../../validations/yupSchemas/registerSchema';
 
 type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'registerUserData'>;

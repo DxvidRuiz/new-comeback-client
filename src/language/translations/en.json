@@ -1,9 +1,10 @@
 {
     "actions": {
         "save": "Save",
-        "update": "update",
+        "update": "Update",
         "delete": "eliminate",
-        "change_language": "Change language"
+        "change_language": "Change language",
+        "edit_profile": "Edit profile"
     },
     "test": {
         "counting": "counting {{0}} of {{1}}"
@@ -11,6 +12,16 @@
     "label": {
         "email": "Email",
         "password": "Password",
-        "change": "Change"
+        "change": "Change",
+        "update_password": "Update password",
+        "confirm_password": "Confirm Password",
+        "current_password": "Current password",
+        "new_password": "New Password",
+        "personal_information": "Personal information",
+        "profile_information": "Profile information",
+        "password_security": "Password and security"
+    },
+    "message": {
+        "password_change": "Your password must have at least 6 characters and must include a combination of special numbers, letters and characters."
     }
 }

@@ -1,30 +1,18 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React, { useEffect } from 'react'
-import { MD3Theme, useTheme } from 'react-native-paper';
-import CustomInput from '../../common/buttons/CustomInput';
-import AuthContainer from '../../common/containers/AuthContainer';
-import { Feather } from '@expo/vector-icons';
-import { Formik, useFormik } from 'formik';
-import { loginSchema } from '../../validations/yupSchemas/login-schema';
-import AuthTitleText from '../../common/text/AuthTitleText';
 import { MaterialIcons } from '@expo/vector-icons';
-import Input from '../../common/input/input';
-import Button from '../../common/buttons/button';
-import MediumText from '../../common/text/MediumText';
-import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import React, { useEffect } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { MD3Theme, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import { AppDispatch, RootState, useAppDispatch } from '../../redux/store/store';
-import { loginUserType } from '../../types/loginUserType';
-import axios from 'axios';
-import { API_ENDPOINTS } from '../../services/api/urlEndpoints/authEnpoint';
-import { METOD_E } from '../../types/apiTypes';
-import BrandText from '../../common/text/BrandText';
-import { SvgUri } from 'react-native-svg';
-import { setAccessToken, setAuthentication, } from '../../redux/slices/authSlice';
-import { getAsyncStorage } from '../../localStorage/GetAsyncStorage';
-import { AsyncStorageKeys } from '../../localStorage/enum/asyncStorageKeys';
-import { refreshUser } from '../../redux/slices/userSlice';
+import Button from '../../common/buttons/button';
+import AuthContainer from '../../common/containers/AuthContainer';
+import Input from '../../common/input/input';
+import AuthTitleText from '../../common/text/AuthTitleText';
+import MediumText from '../../common/text/MediumText';
 import { loginUser } from '../../redux/actions/auth.actions';
+import { refreshUser } from '../../redux/slices/userSlice';
+import { RootState, useAppDispatch } from '../../redux/store/store';
+import { loginSchema } from '../../validations/yupSchemas/login-schema';
 
 const initialValues = { email: '', password: '' }
 
@@ -32,18 +20,20 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const myApiState = useSelector((state: RootState) => state.auth);
 
-  console.log("es autenticado ", myApiState);
 
   const theme = useTheme();
 
   const onSubmit = async (values: typeof initialValues, { setSubmitting, setFieldError }) => {
 
     dispatch(loginUser(values)).then(response => {
-      if(response.meta.requestStatus === 'fulfilled'){
+      if (response.meta.requestStatus === 'fulfilled') {
         dispatch(refreshUser(response.payload))
+
+
       }
       if (response.meta.requestStatus == 'rejected') {
         const data = response.payload as any;
+
         if (!data.response) {
           setFieldError('submitError', 'Network error: Please check your internet connection and try again.');
         } else {

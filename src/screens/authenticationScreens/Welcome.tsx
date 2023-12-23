@@ -1,23 +1,19 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
+import Button from '../../common/buttons/button';
 import AuthContainer from '../../common/containers/AuthContainer';
 import AuthTitleText from '../../common/text/AuthTitleText';
-import Button from '../../common/buttons/button';
 import MediumText from '../../common/text/MediumText';
-import { useDispatch } from 'react-redux';
 
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store/store';
-import SmallText from '../../common/text/SmallText';
-import RegisterPersonalData from './RegisterPersonalData';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParams } from '../../types/types';
+import SmallText from '../../common/text/SmallText';
+import { AuthNavigationProps } from '../../types/NavigationParams/AuthNavigationParams';
 
 
 
-type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'welcome'>;
+type AuthNavigationProp = NativeStackNavigationProp<AuthNavigationProps, 'welcome'>;
 
 const Welcome = () => {
 
@@ -59,7 +55,7 @@ const Welcome = () => {
           </View>
           <View style={styles.termsOption}>
             <TouchableOpacity onPress={() => {
-              
+
             }}>
               <SmallText text='Terms and conditions' />
             </TouchableOpacity>

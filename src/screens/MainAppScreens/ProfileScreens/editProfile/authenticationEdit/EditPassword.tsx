@@ -1,28 +1,31 @@
 import { FormikHelpers, useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import { useSelector } from 'react-redux';
-import Button from '../../common/buttons/button';
-import AuthContainer from '../../common/containers/AuthContainer';
-import Input from '../../common/input/input';
-import AuthTitleText from '../../common/text/AuthTitleText';
-import SmallText from '../../common/text/SmallText';
-import { registerUser } from '../../redux/actions/user.actions';
-import { setAuthentication } from '../../redux/slices/authSlice';
-import { refreshUser } from '../../redux/slices/userSlice';
-import { RootState, useAppDispatch } from '../../redux/store/store';
-import { passwordValidationSchema } from '../../validations/yupSchemas/registerSchema';
+import Button from '../../../../../common/buttons/button';
+import Input from '../../../../../common/input/input';
+import AuthTitleText from '../../../../../common/text/AuthTitleText';
+import SmallText from '../../../../../common/text/SmallText';
+import ModalContainer from '../../../../../components/Modals/ModalContainer';
+import { registerUser } from '../../../../../redux/actions/user.actions';
+import { setAuthentication } from '../../../../../redux/slices/authSlice';
+import { refreshUser } from '../../../../../redux/slices/userSlice';
+import { RootState, useAppDispatch } from '../../../../../redux/store/store';
+import { passwordValidationSchema } from '../../../../../validations/yupSchemas/registerSchema';
 
 const initialValues = { password: '', passwordConfirmation: '' }
 
-const RegisterPasswordStep = () => {
+const EditPassword = () => {
 
     const dispatch = useAppDispatch();
+    const { t } = useTranslation()
+    const [modalVisible, setModalVisible] = useState(false);
 
     const stateData = useSelector((state: RootState) => state.registerForm);
-    // const LASTSTATE = useSelector((state: RootState) => state.registerData);
+
     const onSubmit = async (values: typeof initialValues, { setSubmitting, setFieldError }: FormikHelpers<typeof initialValues>) => {
         console.log(values);
         const newuuid = uuid.v4()
@@ -65,64 +68,56 @@ const RegisterPasswordStep = () => {
     const theme = useTheme();
     const styles = style(theme)
 
-
-
-
-
-
-
     return (
-
-        <AuthContainer>
-
+        <ModalContainer modalVisible={modalVisible} setModalVisible={setModalVisible}>
             <Text style={{ color: "white" }}> {JSON.stringify(formik.errors)}</Text>
             <View style={[styles.container, { backgroundColor: theme.colors.primary }]}>
                 <View style={styles.content} >
 
                     <View style={styles.titleContariner}>
-                        <AuthTitleText text='Create Password:' />
+                        <AuthTitleText text={t("label.update_password")} />
                     </View>
 
                     <View style={styles.titleContariner}>
-                        <SmallText text='Please create a password for your accont.' />
+                        <SmallText text={t("message.password_change")} />
                     </View>
 
                     <View style={styles.inputContainer}>
                         <Input
-                            label='Password'
+                            label={t("label.current_password")}
                             formik={formik}
                             name='password'
                             keyboardType='default'
-
                         />
                         <Input
-                            label='Password confirmation'
+                            label={t("label.new_password")}
+                            formik={formik}
+                            name='password'
+                            keyboardType='default'
+                        />
+                        <Input
+                            label={t("label.confirm_password")}
                             formik={formik}
                             name='passwordConfirmation'
                             keyboardType='default'
                         />
-
                     </View>
-
                     <View style={styles.buttonContainer}>
                         <Button
-
-                            label='Finish'
+                            label={t("actions.update")}
                             size='medium'
                             onPress={formik.handleSubmit}
                             disabled={formik.isSubmitting || !formik.isValid}
                         />
                     </View>
-
-
                 </View>
             </View>
-        </AuthContainer>
+        </ModalContainer>
     )
 }
 
 
-export default RegisterPasswordStep
+export default EditPassword
 
 
 

@@ -1,9 +1,10 @@
 {
     "actions": {
         "save": "Guardar",
-        "update": "actualizar",
+        "update": "Actualizar",
         "delete": "eliminar",
-        "change_language": "Cambiar lenguaje"
+        "change_language": "Cambiar lenguaje",
+        "edit_profile": "Editar perfil"
     },
     "test": {
         "counting": "contando {{0}} de {{1}}"
@@ -11,6 +12,16 @@
     "label": {
         "email": "Correo electronico",
         "password": "Contraseña",
-        "change": "Cambiar"
+        "change": "Cambiar",
+        "update_password": "Actualizar contraseña",
+        "confirm_password": "Confirmar contraseña",
+        "current_password": "Contraseña actual",
+        "new_password": "Nueva contraseña",
+        "personal_information": "Informacion personal",
+        "profile_information": "Informacion de perfil",
+        "password_security": "Contraseña y seguridad"
+    },
+    "message": {
+        "password_change": "Su contraseña debe tener al menos 6 caracteres y debe incluir una combinación de números, letras y caracteres especiales."
     }
 }

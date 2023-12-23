@@ -1,38 +1,31 @@
 // EditProfileScreen
 
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { MD3Theme, useTheme } from 'react-native-paper';
-import AuthContainer from '../../../common/containers/AuthContainer';
-import { Formik, useFormik } from 'formik';
-import AuthTitleText from '../../../common/text/AuthTitleText';
-import Input from '../../../common/input/input';
-import Button from '../../../common/buttons/button';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../redux/store/store';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Avatar } from 'react-native-paper';
-import CommonDatePicker from '../../../components/date/CommonDatePicker';
-import { personalDataSchema } from '../../..//validations/yupSchemas/registerSchema';
-import SmallText from '../../../common/text/SmallText';
-import { setPersonalData } from '../../../redux/slices/registerFormSlice';
-import GenderSelection from '../../../components/PersonalData/GenderSelection';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParams } from '../../../types/types';
-import { useNavigation } from '@react-navigation/native';
-import MediumText from '../../../common/text/MediumText';
-import MainContainer from '../../../common/containers/MainContainer';
-import TouchableList from '../../../common/list/TouchableList';
-import ListButton from '../../../common/buttons/ListButton';
 import { AntDesign } from '@expo/vector-icons';
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Avatar, MD3Theme, useTheme } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import ListButton from '../../../../common/buttons/ListButton';
+import Button from '../../../../common/buttons/button';
+import MainContainer from '../../../../common/containers/MainContainer';
+import MediumText from '../../../../common/text/MediumText';
+import { AppDispatch, RootState } from '../../../../redux/store/store';
+import { ProfileNavigationProps } from '../../../../types/NavigationParams/profileParams';
+import { personalDataSchema } from '../../../../validations/yupSchemas/registerSchema';
 
 
 
-type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'editProfile'>;
+type EditProfileNavigationProp = NativeStackNavigationProp<ProfileNavigationProps, 'editProfile'>;
 
 
 const EditProfileScreen = () => {
+    const { t } = useTranslation()
+    const navigation = useNavigation<EditProfileNavigationProp>()
 
     const { loading, user: data } = useSelector((state: RootState) => state.user)
 
@@ -40,9 +33,7 @@ const EditProfileScreen = () => {
     const stateData = useSelector((state: RootState) => state.registerForm);
     const [date, setDate] = useState(new Date(1598051730000));
     const [show, setShow] = useState(false);
-    const [datePickerValues, setDatePickerValues] = useState({ day: "Day", month: "Month", year: "Year" });
 
-    const navigation = useNavigation<AuthNavigationProp>()
 
 
     // const stateData = useSelector((state: RootState) => state.registerData);
@@ -71,8 +62,8 @@ const EditProfileScreen = () => {
             try {
                 // console.log(stateData);
 
-                dispatch(setPersonalData({ name: values.name.trim(), lastname: values.lastname.trim(), dateOfBirth: values.dateOfBirth, gender: values.gender.trim() }));
-                navigation.navigate("registerUserData")
+                // dispatch(setPersonalData({ name: values.name.trim(), lastname: values.lastname.trim(), dateOfBirth: values.dateOfBirth, gender: values.gender.trim() }));
+                // navigation.navigate("registerUserData")
             } catch (error) {
 
                 throw new Error("message:", error)
@@ -93,11 +84,11 @@ const EditProfileScreen = () => {
                     <View style={styles.mainAvatarContariner}>
 
                         <View style={styles.avatarContariner}>
-                            <Avatar.Image size={120} source={require('../../../../assets/Profile/Duaprofile.jpeg')} style={styles.profilePhoto} />
+                            <Avatar.Image size={120} source={require('../../../../../assets/Profile/Duaprofile.jpeg')} style={styles.profilePhoto} />
                         </View>
 
                         <View style={styles.nameContariner}>
-                            <MediumText text={`${data.name} ${data.lastname}`} fontWeight="900" />
+                            <MediumText text={data && `${data.name} ${data.lastname}`} fontWeight="900" />
                             <Button
                                 type='outlined'
                                 textColor={theme.colors.onPrimary}
@@ -114,24 +105,12 @@ const EditProfileScreen = () => {
 
                     <View style={styles.inputContainer}>
 
-                        <ListButton onPress={() => { navigation.navigate("editPersonalData") }} text='Personal data' rightIcon={<AntDesign name="right" size={24} color={theme.colors.onSurface} />} />
-                        <ListButton onPress={() => { navigation.navigate("editProfileData") }} text='Profile data' rightIcon={<AntDesign name="right" size={24} color={theme.colors.onSurface} />} />
-                        <ListButton onPress={() => { navigation.navigate("editAuthData") }} text='Auth data' rightIcon={<AntDesign name="right" size={24} color={theme.colors.onSurface} />} />
+                        <ListButton onPress={() => { navigation.navigate("editPersonalData") }} text={t("label.personal_information")} rightIcon={<AntDesign name="right" size={24} color={theme.colors.onSurface} />} />
+                        <ListButton onPress={() => { navigation.navigate("editPassword") }} text={t("label.profile_information")} rightIcon={<AntDesign name="right" size={24} color={theme.colors.onSurface} />} />
+                        <ListButton onPress={() => { navigation.navigate("editAuthData") }} text={t("label.password_security")} rightIcon={<AntDesign name="right" size={24} color={theme.colors.onSurface} />} />
 
                     </View>
 
-
-                    {show && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={date}
-                            mode={'date'}
-                            onChange={onChange}
-                            display='spinner'
-                            minimumDate={new Date(1920, 0, 1)}
-                            maximumDate={maxDate}
-                        />
-                    )}
 
                 </View>
             </ScrollView>

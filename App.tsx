@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from './src/language/i18';
 export default function App() {
 
-  const { } = useTranslation()
+  const { t } = useTranslation()
 
   return (
 
