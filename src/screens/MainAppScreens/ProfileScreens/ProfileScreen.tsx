@@ -75,7 +75,7 @@ const ProfileScreen = () => {
                                 textColor={theme.colors.onPrimary}
                                 label={t("actions.edit_profile")}
                                 size='small'
-                                onPress={() => navigation.navigate("editProfile")}
+                                onPress={() => navigation.navigate("profileNavigation")}
                                 color="clear"
                             // disabled={formik.isSubmitting || !formik.isValid}
 
