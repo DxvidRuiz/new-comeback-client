@@ -108,7 +108,7 @@ const EditPersonalData = () => {
                     "Changes saved",
                     "Personal data has been updated",
                     [
-                        // { text: 'OK', onPress: () => navigation.navigate("editProfile") },
+                        { text: 'OK', onPress: () => navigation.navigate("editProfile") },
                     ],
                     { cancelable: false }
                 );
