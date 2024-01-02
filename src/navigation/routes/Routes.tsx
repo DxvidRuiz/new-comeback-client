@@ -7,7 +7,7 @@ import { RootState } from '../../redux/store/store'
 import { darkTheme, lightTheme } from '../../styles/theme'
 import { CommonNavigationProps } from '../../types/NavigationParams/CommonNavigationParams'
 import AuthNavigation from './AuthNavigation'
-import MainTabNavigation from './MainTabNavigation'
+import MainNavigation from './MainTabNavigation'
 // import MainTabNavigation from './MainTabNavigation'
 
 const Stack = createNativeStackNavigator<CommonNavigationProps>()
@@ -26,7 +26,7 @@ const Routes = () => {
                         authenticated
                             // false
                             ?
-                            <Stack.Screen name='MainTabProps' component={MainTabNavigation} options={{ headerShown: false }} />
+                            <Stack.Screen name='MainTabProps' component={MainNavigation} options={{ headerShown: false }} />
                             :
                             <Stack.Screen name='AuthProps' component={AuthNavigation} options={{ headerShown: false, headerBackButtonMenuEnabled: true, }} />
                     }
