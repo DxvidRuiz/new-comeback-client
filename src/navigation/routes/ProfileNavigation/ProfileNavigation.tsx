@@ -40,6 +40,7 @@ const ProfileNavigation = () => {
                 headerBackButtonMenuEnabled: true,
                 headerBackVisible: true,
                 headerTransparent: true,
+                animation: "slide_from_right",
                 headerTintColor: theme.colors.onPrimary,
                 headerTitle: ""
             }} />
@@ -51,6 +52,7 @@ const ProfileNavigation = () => {
                 headerTitle: "Auth Information",
                 headerTransparent: true,
                 headerTintColor: theme.colors.onPrimary,
+                animation: "slide_from_right",
                 headerTitleAlign: "center",
             }} />
 
@@ -60,6 +62,7 @@ const ProfileNavigation = () => {
                 headerBackVisible: true,
                 headerTitle: "",
                 headerTransparent: false,
+                animation: "slide_from_right",
                 headerTintColor: theme.colors.onPrimary,
                 headerTitleAlign: "center",
             }} />
