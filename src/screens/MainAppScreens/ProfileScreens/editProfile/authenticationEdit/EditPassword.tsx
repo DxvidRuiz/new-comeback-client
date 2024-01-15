@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import { useSelector } from 'react-redux';
-import Button from '../../../../../common/buttons/button';
+import Button from '../../../../../common/buttons/CustomButton';
 import Input from '../../../../../common/input/input';
 import AuthTitleText from '../../../../../common/text/AuthTitleText';
 import SmallText from '../../../../../common/text/SmallText';

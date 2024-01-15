@@ -8,12 +8,13 @@ import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Avatar, MD3Theme, useTheme } from 'react-native-paper';
+import { MD3Theme, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import Button from '../../../../common/buttons/CustomButton';
 import ListButton from '../../../../common/buttons/ListButton';
-import Button from '../../../../common/buttons/button';
 import MainContainer from '../../../../common/containers/MainContainer';
 import MediumText from '../../../../common/text/MediumText';
+import ProfilePhoto from '../../../../components/profile/profilePhotoContainers/ProfilePhoto';
 import { AppDispatch, RootState } from '../../../../redux/store/store';
 import { ProfileNavigationProps } from '../../../../types/NavigationParams/profileParams';
 import { personalDataSchema } from '../../../../validations/yupSchemas/registerSchema';
@@ -83,9 +84,9 @@ const EditProfileScreen = () => {
 
                     <View style={styles.mainAvatarContariner}>
 
-                        <View style={styles.avatarContariner}>
-                            <Avatar.Image size={120} source={require('../../../../../assets/Profile/Duaprofile.jpeg')} style={styles.profilePhoto} />
-                        </View>
+                        <ProfilePhoto />
+
+
 
                         <View style={styles.nameContariner}>
                             <MediumText text={data && `${data.name} ${data.lastname}`} fontWeight="900" />
