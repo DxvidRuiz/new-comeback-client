@@ -2,12 +2,12 @@ import * as React from 'react';
 import { TextInput } from 'react-native-paper';
 
 
-type InputOptions={
+type InputOptions = {
   rightIcon?: any,
-  label?:string
+  label?: string
 }
 
-const CustomInput = (options : InputOptions) => {
+const CustomInput = (options: InputOptions) => {
   const [text, setText] = React.useState('');
 
   return (

@@ -16,3 +16,8 @@
 "label.personal_information","Informacion personal","Informacion personal","Personal information"
 "label.profile_information","Informacion de perfil","Informacion de perfil","Profile information"
 "label.password_security","Contraseña y seguridad","Contraseña y seguridad","Password and security"
+"actions.edit_photo","Editar foto","Editar foto","Edit photo"
+"actions.cancel","Cancelar","Cancelar","Cancel"
+"actions.confirm","Confirmar","Confirmar","Confirm"
+"actions.camera","Camara","Camara","Camera"
+"actions.gallery","Galeria","Galeria","Gallery"

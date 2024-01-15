@@ -4,7 +4,12 @@
         "update": "Actualizar",
         "delete": "eliminar",
         "change_language": "Cambiar lenguaje",
-        "edit_profile": "Editar perfil"
+        "edit_profile": "Editar perfil",
+        "edit_photo": "Editar foto",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "camera": "Camara",
+        "gallery": "Galeria"
     },
     "test": {
         "counting": "contando {{0}} de {{1}}"

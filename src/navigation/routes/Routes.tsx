@@ -13,6 +13,7 @@ import MainNavigation from './MainTabNavigation'
 const Stack = createNativeStackNavigator<CommonNavigationProps>()
 const Routes = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
+
     const authenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const toggleDarkMode = () => { setIsDarkMode(!isDarkMode) };
     console.log(authenticated, 'in routes');
@@ -24,7 +25,6 @@ const Routes = () => {
 
                     {
                         authenticated
-                            // false
                             ?
                             <Stack.Screen name='MainTabProps' component={MainNavigation} options={{ headerShown: false }} />
                             :

@@ -4,7 +4,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import Button from '../../common/buttons/button';
+import Button from '../../common/buttons/CustomButton';
 import AuthContainer from '../../common/containers/AuthContainer';
 import AuthTitleText from '../../common/text/AuthTitleText';
 import MediumText from '../../common/text/MediumText';
