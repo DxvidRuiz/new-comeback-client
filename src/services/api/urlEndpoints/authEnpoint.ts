@@ -8,5 +8,6 @@ export const API_ENDPOINTS = {
   CHECK_USERNAME: "auth/checkusername",
   CHECK_EMAIL: "auth/checkemail",
   COMMENTS: "/comments",
+  UPLOAD_PROFILE_PHOTO: "profile/profile-photo",
   // Agrega aquí otras rutas que necesites
 };

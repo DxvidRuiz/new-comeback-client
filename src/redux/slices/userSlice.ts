@@ -2,8 +2,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AsyncStorageKeys } from "../../localStorage/enum/asyncStorageKeys";
 import { saveAsyncStorage } from "../../localStorage/SaveAsyncStorage";
-import UserData_I from "../../types/userDataInterface";
-import { checkEmail, registerUser, updateUser } from "../actions/user.actions";
+import UserData_I, { ProfileData_I } from "../../types/userDataInterface";
+import { checkEmail, registerUser, updateUser, uploadProfilePhoto } from "../actions/user.actions";
 
 interface user_i {
   user: UserData_I;
@@ -61,7 +61,7 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
       })
-
+      //_----------------------------------------------------------------
       .addCase(updateUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -72,6 +72,20 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Something went wrong";
+      })
+      //----------Upload profile photo 
+      .addCase(uploadProfilePhoto.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(uploadProfilePhoto.fulfilled, (state, action: PayloadAction<ProfileData_I>) => {
+        state.loading = false;
+        state.user.profile.profilePhotoRoute = action.payload.profilePhotoRoute;
+        state.error = null;
+      })
+      .addCase(uploadProfilePhoto.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Something went wrong";
       });
