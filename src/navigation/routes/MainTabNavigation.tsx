@@ -1,31 +1,35 @@
-import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'react-native-paper';
-import FeedScreen from '../../screens/MainAppScreens/HomeScreens/FeedScreen';
-import MessagesScreen from '../../screens/MainAppScreens/MessageScreens/MessagesScreen';
-import { AppTabNavigationProps } from '../../types/NavigationParams/AppTabNavigationProps';
+import { MainNavigationProps } from '../../types/NavigationParams/MainNavigationParams';
 import ProfileNavigation from './ProfileNavigation';
+import TabNavigation from './TabNavigator';
 
-export const MainTabNavigation = () => {
-    const Tab = createBottomTabNavigator<AppTabNavigationProps>();
+export const MainNavigation = () => {
+    const Stack = createNativeStackNavigator<MainNavigationProps>()
 
     const theme = useTheme()
     return (
-        <Tab.Navigator
-            screenOptions={{
-                tabBarActiveTintColor: theme.colors.secondary,
+        <Stack.Navigator >
+            <Stack.Screen name='home' component={TabNavigation} options={{
+                headerStyle: { backgroundColor: theme.colors.background },
+                headerBackButtonMenuEnabled: true,
+                headerTintColor: theme.colors.onPrimary,
+                headerTitle: "Edit profile",
+                headerTitleAlign: "center",
+                animation: "flip",
+                fullScreenGestureEnabled: true,
+                headerShown: false
+            }} />
+
+            <Stack.Screen name='profileNavigation' component={ProfileNavigation} options={{
                 headerShown: false,
-                tabBarShowLabel: false,
-                tabBarActiveBackgroundColor: theme.colors.onSecondary,
-                tabBarInactiveBackgroundColor: theme.colors.onSecondary,
-            }}
-        >
+                headerTitleAlign: "center",
+                presentation: "modal",
+                animation: "fade_from_bottom"
+            }} />
 
-            <Tab.Screen name="feed" component={FeedScreen} options={{ tabBarIcon: ({ focused }) => (<Octicons name="home" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }} />
-            <Tab.Screen name="messages" component={MessagesScreen} options={{ tabBarIcon: ({ focused }) => (<MaterialCommunityIcons name="message-reply-outline" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }} />
 
-            <Tab.Screen name="profile" component={ProfileNavigation} options={{ headerShown: false, headerTransparent: false, tabBarIcon: ({ focused }) => (<Octicons name="person" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }} />
-        </Tab.Navigator>
+        </Stack.Navigator>
     )
 }
 
@@ -33,4 +37,4 @@ export const MainTabNavigation = () => {
 
 
 
-export default MainTabNavigation
+export default MainNavigation

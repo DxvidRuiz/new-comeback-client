@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import Button from '../../../../common/buttons/button';
+import Button from '../../../../common/buttons/CustomButton';
 import MainContainer from '../../../../common/containers/MainContainer';
 import Input from '../../../../common/input/input';
 import SmallText from '../../../../common/text/SmallText';
@@ -108,7 +108,7 @@ const EditPersonalData = () => {
                     "Changes saved",
                     "Personal data has been updated",
                     [
-                        // { text: 'OK', onPress: () => navigation.navigate("editProfile") },
+                        { text: 'OK', onPress: () => navigation.navigate("editProfile") },
                     ],
                     { cancelable: false }
                 );

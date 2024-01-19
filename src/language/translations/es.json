@@ -4,7 +4,12 @@
         "update": "Actualizar",
         "delete": "eliminar",
         "change_language": "Cambiar lenguaje",
-        "edit_profile": "Editar perfil"
+        "edit_profile": "Editar perfil",
+        "edit_photo": "Editar foto",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "camera": "Camara",
+        "gallery": "Galeria"
     },
     "test": {
         "counting": "contando {{0}} de {{1}}"
@@ -19,9 +24,12 @@
         "new_password": "Nueva contraseña",
         "personal_information": "Informacion personal",
         "profile_information": "Informacion de perfil",
-        "password_security": "Contraseña y seguridad"
+        "password_security": "Contraseña y seguridad",
+        "forgot_password": "Olvide mi contraseña",
+        "update_password_subtitle": "Por favor actualice su contraseña."
     },
     "message": {
-        "password_change": "Su contraseña debe tener al menos 6 caracteres y debe incluir una combinación de números, letras y caracteres especiales."
+        "password_change": "Su contraseña debe tener al menos 6 caracteres y debe incluir una combinación de números, letras y caracteres especiales.",
+        "change_email_message": "Para completar esta accion se enviara un codigo de confirmacion a tu actual correo."
     }
 }

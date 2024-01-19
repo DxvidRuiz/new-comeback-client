@@ -1,15 +1,16 @@
 // EditProfileScreen
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Avatar, MD3Theme, useTheme } from 'react-native-paper';
+import { MD3Theme, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../../common/buttons/button';
+import Button from '../../../common/buttons/CustomButton';
 import MainContainer from '../../../common/containers/MainContainer';
+import { ImageInfo } from '../../../common/images/CommonImagePicker';
 import MediumText from '../../../common/text/MediumText';
+import ProfilePhoto from '../../../components/profile/profilePhotoContainers/ProfilePhoto';
 import { AppDispatch, RootState } from '../../../redux/store/store';
 import { ProfileNavigationProps } from '../../../types/NavigationParams/profileParams';
 
@@ -25,7 +26,8 @@ const ProfileScreen = () => {
     const dispatch = useDispatch<AppDispatch>();
     const stateData = useSelector((state: RootState) => state.registerForm);
     const [date, setDate] = useState(new Date(1598051730000));
-    const [show, setShow] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+    const [profileImage, setProfileImage] = useState('../../../../assets/Profile/Duaprofile.jpeg');
 
     const navigation = useNavigation<ProfileNavigationProp>()
 
@@ -38,17 +40,17 @@ const ProfileScreen = () => {
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 12); // Resta 12 años
 
-    const onChange = async (event: DateTimePickerEvent, selectedDate?: Date) => {
 
-
+    const handleImageSelected = async (ImageInfo: ImageInfo) => {
+        // Aquí puedes manejar la lógica de lo que deseas hacer con la imagen seleccionada
+        console.log('Imagen seleccionada:', ImageInfo.uri);
+        console.log('Imagen uri:', ImageInfo.file.uri);
+        setProfileImage(ImageInfo.uri)
+        setIsVisible(true)
     };
-    useEffect(() => {
 
 
-    }, []);
 
-
-    console.log(stateData);
 
     const theme = useTheme();
 
@@ -65,7 +67,14 @@ const ProfileScreen = () => {
                     <View style={styles.mainAvatarContariner}>
 
                         <View style={styles.avatarContariner}>
-                            <Avatar.Image size={120} source={require('../../../../assets/Profile/Duaprofile.jpeg')} style={styles.profilePhoto} />
+                            {/* <CommonImagePicker onImageSelected={handleImageSelected}>
+                                <Avatar.Image size={120} source={{ uri: data.}} style={styles.profilePhoto} />
+                              
+
+                            </CommonImagePicker> */}
+
+
+                            <ProfilePhoto />
                         </View>
 
                         <View style={styles.nameContariner}>
@@ -75,7 +84,7 @@ const ProfileScreen = () => {
                                 textColor={theme.colors.onPrimary}
                                 label={t("actions.edit_profile")}
                                 size='small'
-                                onPress={() => navigation.navigate("editProfile")}
+                                onPress={() => navigation.navigate("profileNavigation")}
                                 color="clear"
                             // disabled={formik.isSubmitting || !formik.isValid}
 

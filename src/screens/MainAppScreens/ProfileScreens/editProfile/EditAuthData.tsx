@@ -11,6 +11,7 @@ import { MD3Theme, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import ListButton from '../../../../common/buttons/ListButton';
 import MainContainer from '../../../../common/containers/MainContainer';
+import EmailConfirmationModal from '../../../../components/Modals/EmailConfirmationModal';
 import { setPersonalData } from '../../../../redux/slices/registerFormSlice';
 import { AppDispatch, RootState } from '../../../../redux/store/store';
 import { ProfileNavigationProps } from '../../../../types/NavigationParams/profileParams';
@@ -24,11 +25,10 @@ type EditAuthDataNavigationProp = NativeStackNavigationProp<ProfileNavigationPro
 const EditAuthData = () => {
 
     const { t } = useTranslation()
-    const { loading, user: data } = useSelector((state: RootState) => state.user)
-    const [isChangePasswordModalVisible, setChangePasswordModalVisible] = useState(false);
+    const loading = useSelector((state: RootState) => state.multipleActions.loading)
     const dispatch = useDispatch<AppDispatch>();
     const stateData = useSelector((state: RootState) => state.registerForm);
-    const [show, setShow] = useState(false);
+    const [showEmailModal, setShowEmailModal] = useState(false);
 
     const navigation = useNavigation<EditAuthDataNavigationProp>()
 
@@ -77,14 +77,23 @@ const EditAuthData = () => {
                 <View style={styles.content} >
                     <View style={styles.inputContainer}>
                         <ListButton
-                            onPress={() => navigation.navigate("editProfile")
+                            onPress={() =>
+                                setShowEmailModal(true)
+
                             }
                             text={t("label.email")}
                             rightIcon={<Text style={[styles.icono, { marginRight: 15 }]}>{t("label.change")}</Text>} />
+
+                        <EmailConfirmationModal currentEmail='eeee' isVisible={showEmailModal} onCancel={() => setShowEmailModal(false)} onConfirm={() => { }} />
                         <ListButton
-                            onPress={() => navigation.navigate("editPassword")}
+                            onPress={() =>
+                                navigation.navigate("passwordUpdateForm")
+
+                            }
                             text={t("label.password")}
                             rightIcon={<Text style={[styles.icono, { marginRight: 15 }]}>{t("label.change")}</Text>} />
+
+
                     </View>
                 </View>
             </View>

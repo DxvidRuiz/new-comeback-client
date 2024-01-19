@@ -1,6 +1,5 @@
 // features/authSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { apiCallThunk } from "../thunks/apiCallThunk";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface user_i {
   data: {
@@ -11,6 +10,7 @@ interface user_i {
     lastname: string;
     gender: string;
     dateOfBirth: string;
+    profile: any
   };
 }
 
@@ -23,6 +23,7 @@ const initialState: user_i = {
     lastname: undefined,
     dateOfBirth: undefined,
     gender: undefined,
+    profile: undefined
   },
 };
 
