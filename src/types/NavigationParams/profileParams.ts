@@ -8,6 +8,7 @@ export type ProfileParams = {
     profileNavigation: undefined;
     editPassword: undefined;
     profileData: undefined;
+    passwordUpdateForm: undefined;
 };
 
 export type ProfileNavigationProps = {
@@ -18,6 +19,7 @@ export type ProfileNavigationProps = {
     profileNavigation: NativeStackNavigationProp<ProfileParams, "profileNavigation">;
     editPassword: NativeStackNavigationProp<ProfileParams, "editPassword">;
     profileData: NativeStackNavigationProp<ProfileParams, "profileData">;
+    passwordUpdateForm: NativeStackNavigationProp<ProfileParams, "passwordUpdateForm">;
 };
 
 

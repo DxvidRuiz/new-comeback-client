@@ -1,4 +1,4 @@
-import { MD3LightTheme, MD3DarkTheme } from "react-native-paper";
+import { MD3DarkTheme, MD3LightTheme } from "react-native-paper";
 export const lightTheme = {
   ...MD3LightTheme,
   colors: {
@@ -18,7 +18,7 @@ export const lightTheme = {
     background: '#FFFFFF', // Fondo blanco
     onBackground: '#000000', // Texto negro sobre fondo blanco
     surface: '#FFFFFF', // Superficies blancas
-    onSurface: '#000000', 
+    onSurface: '#000000',
     blackAndWhite: '#000000'// Texto negro sobre superficies blancas
     // Continúa con los demás colores según sea necesario...
   },
