@@ -8,6 +8,7 @@ import Routes from './src/navigation/routes';
 import { persistor, store } from './src/redux/store/store';
 
 import { useTranslation } from 'react-i18next';
+import FlashMessage from 'react-native-flash-message';
 import i18n from './src/language/i18';
 export default function App() {
 
@@ -22,6 +23,7 @@ export default function App() {
           <I18nextProvider i18n={i18n}>
 
             <Routes />
+            <FlashMessage position={"top"} />
             <StatusBar style="auto" />
           </I18nextProvider>
 

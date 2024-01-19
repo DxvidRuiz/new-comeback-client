@@ -21,3 +21,6 @@
 "actions.confirm","Confirmar","Confirmar","Confirm"
 "actions.camera","Camara","Camara","Camera"
 "actions.gallery","Galeria","Galeria","Gallery"
+"message.change_email_message","Para completar esta accion se enviara un codigo de confirmacion a tu actual correo.","Para completar esta accion se enviara un codigo de confirmacion a tu actual correo.","To complete this action a confirmation code will be sent to your current mail."
+"label.forgot_password","Olvide mi contraseña","Olvide mi contraseña","Forgot password"
+"label.update_password_subtitle","Por favor actualice su contraseña.","Por favor actualice su contraseña.","Please update your password."

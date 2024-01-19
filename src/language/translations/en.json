@@ -24,9 +24,12 @@
         "new_password": "New Password",
         "personal_information": "Personal information",
         "profile_information": "Profile information",
-        "password_security": "Password and security"
+        "password_security": "Password and security",
+        "forgot_password": "Forgot password",
+        "update_password_subtitle": "Please update your password."
     },
     "message": {
-        "password_change": "Your password must have at least 6 characters and must include a combination of special numbers, letters and characters."
+        "password_change": "Your password must have at least 6 characters and must include a combination of special numbers, letters and characters.",
+        "change_email_message": "To complete this action a confirmation code will be sent to your current mail."
     }
 }
