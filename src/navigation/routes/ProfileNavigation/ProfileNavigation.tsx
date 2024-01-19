@@ -4,7 +4,7 @@ import EditAuthData from "../../../screens/MainAppScreens/ProfileScreens/editPro
 import EditPersonalData from "../../../screens/MainAppScreens/ProfileScreens/editProfile/EditPersonalData";
 import EditProfileData from "../../../screens/MainAppScreens/ProfileScreens/editProfile/EditProfileData";
 import EditProfileScreen from "../../../screens/MainAppScreens/ProfileScreens/editProfile/EditProfileScreen";
-import EditPassword from "../../../screens/MainAppScreens/ProfileScreens/editProfile/authenticationEdit/EditPassword";
+import PasswordUpdateForm from "../../../screens/MainAppScreens/ProfileScreens/editProfile/authenticationEdit/PasswordUpdateForm ";
 import { ProfileNavigationProps } from "../../../types/NavigationParams/profileParams";
 
 
@@ -56,12 +56,13 @@ const ProfileNavigation = () => {
                 headerTitleAlign: "center",
             }} />
 
-            <Stack.Screen name='editPassword' component={EditPassword} options={{
-                headerShown: false,
+
+            <Stack.Screen name='passwordUpdateForm' component={PasswordUpdateForm} options={{
+                headerShown: true,
                 headerBackButtonMenuEnabled: true,
                 headerBackVisible: true,
                 headerTitle: "",
-                headerTransparent: false,
+                headerTransparent: true,
                 animation: "slide_from_right",
                 headerTintColor: theme.colors.onPrimary,
                 headerTitleAlign: "center",
