@@ -10,5 +10,6 @@ export const API_ENDPOINTS = {
   COMMENTS: "/comments",
   UPLOAD_PROFILE_PHOTO: "profile/profile-photo",
   UPDATE_PASSWORD: "users/password_update",
+  GENERATE_PASSWORD_UPDATE_OTP: "auth/generate-otp-code",
   // Agrega aquí otras rutas que necesites
 };

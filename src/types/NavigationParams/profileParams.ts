@@ -9,6 +9,8 @@ export type ProfileParams = {
     editPassword: undefined;
     profileData: undefined;
     passwordUpdateForm: undefined;
+    passwordUpdateFormAfter2FA: undefined;
+    passwordUpdateCodeConfirmation: undefined;
 };
 
 export type ProfileNavigationProps = {
@@ -20,6 +22,8 @@ export type ProfileNavigationProps = {
     editPassword: NativeStackNavigationProp<ProfileParams, "editPassword">;
     profileData: NativeStackNavigationProp<ProfileParams, "profileData">;
     passwordUpdateForm: NativeStackNavigationProp<ProfileParams, "passwordUpdateForm">;
+    passwordUpdateFormAfter2FA: NativeStackNavigationProp<ProfileParams, "passwordUpdateFormAfter2FA">;
+    passwordUpdateCodeConfirmation: NativeStackNavigationProp<ProfileParams, "passwordUpdateCodeConfirmation">;
 };
 
 

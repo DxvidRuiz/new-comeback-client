@@ -24,10 +24,10 @@ const initialValues = {
     newPasswordConfirmation: ''
 };
 
-type editProfileataProp = NativeStackNavigationProp<ProfileNavigationProps, 'passwordUpdateForm'>;
+type editProfileataProp = NativeStackNavigationProp<ProfileNavigationProps, 'passwordUpdateFormAfter2FA'>;
 
 
-const PasswordUpdateForm = () => {
+const PasswordUpdateFormAfter2FA = () => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation()
     const navigation = useNavigation<editProfileataProp>()
@@ -187,7 +187,7 @@ const PasswordUpdateForm = () => {
     );
 };
 
-export default PasswordUpdateForm;
+export default PasswordUpdateFormAfter2FA;
 
 const style = (theme: MD3Theme) =>
     StyleSheet.create({
