@@ -20,6 +20,7 @@ import { ProfileNavigationProps } from '../../../types/NavigationParams/profileP
 const ProfileScreen = () => {
     type ProfileNavigationProp = NativeStackNavigationProp<ProfileNavigationProps, 'profileData'>;
     const { loading, user: data } = useSelector((state: RootState) => state.user)
+    const eeeee = useSelector((state: RootState) => state.auth.token)
     const { t } = useTranslation()
 
 
@@ -30,11 +31,7 @@ const ProfileScreen = () => {
     const [profileImage, setProfileImage] = useState('../../../../assets/Profile/Duaprofile.jpeg');
 
     const navigation = useNavigation<ProfileNavigationProp>()
-
-
-
     // const stateData = useSelector((state: RootState) => state.registerData);
-
 
     // --------------------------------- max date validation
     const maxDate = new Date();
@@ -68,8 +65,9 @@ const ProfileScreen = () => {
 
                         <View style={styles.avatarContariner}>
                             {/* <CommonImagePicker onImageSelected={handleImageSelected}>
-                                <Avatar.Image size={120} source={{ uri: data.}} style={styles.profilePhoto} />
-                              
+
+                                <Avatar.Image size={120} source={{ uri: data.profile.profilePhotoRoute }} style={styles.profilePhoto} />
+
 
                             </CommonImagePicker> */}
 

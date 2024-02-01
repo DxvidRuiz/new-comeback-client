@@ -1,9 +1,8 @@
 // features/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AsyncStorageKeys } from "../../localStorage/enum/asyncStorageKeys";
-import { saveAsyncStorage } from "../../localStorage/SaveAsyncStorage";
-import UserData_I, { ProfileData_I } from "../../types/userDataInterface";
+import UserData_I from "../../types/userDataInterface";
 import { checkEmail, registerUser, updateUser, uploadProfilePhoto } from "../actions/user.actions";
+import { setAccessToken } from "./authSlice";
 
 interface user_i {
   user: UserData_I;
@@ -23,10 +22,15 @@ export const userSlice = createSlice({
   name: "userSlice",
   initialState,
   reducers: {
-    refreshUser: (state, { payload }: PayloadAction<Partial<user_i>>) => {
-      if (state.user) {
-        state.user = payload.user;
+    refreshUser: (state, { payload }: PayloadAction<any>) => {
+      try {
+        state.user = payload?.data?.user;
 
+
+        console.log("refresh user  guardado de token ", payload.data.token);
+
+      } catch (error) {
+        console.log(error);
       }
     },
   },
@@ -54,7 +58,10 @@ export const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.error = null;
-        saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, action.payload.token);
+
+        setAccessToken(action.payload.token)
+
+        // saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, action.payload.token);
 
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -80,9 +87,9 @@ export const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(uploadProfilePhoto.fulfilled, (state, action: PayloadAction<ProfileData_I>) => {
+      .addCase(uploadProfilePhoto.fulfilled, (state, action: any) => {
         state.loading = false;
-        state.user.profile.profilePhotoRoute = action.payload.profilePhotoRoute;
+        state.user.profile.profilePhotoRoute = action.payload.data.profilePhotoRoute;
         state.error = null;
       })
       .addCase(uploadProfilePhoto.rejected, (state, action) => {

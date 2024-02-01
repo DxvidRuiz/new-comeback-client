@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 
 type props = {
@@ -31,6 +31,7 @@ const style = (theme: MD3Theme, color?: string, underline?: boolean, fontWeight?
     },
     text: {
         fontWeight: fontWeight,
+
         fontSize: 14,
         color: color || theme.colors.onPrimary,
         textDecorationLine: underline ? 'underline' : 'none', // Agregamos el subrayado si 'underline' es true

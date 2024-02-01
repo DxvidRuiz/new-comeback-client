@@ -62,7 +62,6 @@ export const uploadProfilePhoto = createAsyncThunk(
       console.log(data, 'data send');
 
       const response = await Api.post(API_ENDPOINTS.UPLOAD_PROFILE_PHOTO, data);
-      console.log("response ene el thuk", response);
 
       return response; // Este será el payload de la acción fulfilled
     } catch (error) {

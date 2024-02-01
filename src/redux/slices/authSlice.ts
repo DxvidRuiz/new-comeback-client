@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AsyncStorageKeys } from "../../localStorage/enum/asyncStorageKeys";
 import { saveAsyncStorage } from "../../localStorage/SaveAsyncStorage";
+import { EncryptKeys } from "../../services/security/EncryptKeys";
 import { loginUser } from "../actions/auth.actions";
 
 
@@ -32,12 +33,15 @@ export const authSlice = createSlice({
     setAuthentication: (state, action: PayloadAction<boolean>) => {
       state.isAuthenticated = action.payload;
     },
-    setAccessToken: (state, action: PayloadAction<string | null>) => {
-      state.token = action.payload;
+    setAccessToken: (state, action: PayloadAction<any>) => {
+      // state.token = action.payload.data.token; 
+
+      saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, action.payload.data.token, EncryptKeys.AUTH_ENCRYPT_KEY)
+
     },
     logout(state) {
       state.isAuthenticated = false;
-      saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, undefined);
+      setAccessToken(undefined);
     }
   },
   extraReducers: (builder) => {
@@ -50,7 +54,8 @@ export const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         state.error = null;
-        saveAsyncStorage(AsyncStorageKeys.AUTH_TOKEN, action.payload.token);
+
+
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;

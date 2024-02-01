@@ -4,7 +4,9 @@ import EditAuthData from "../../../screens/MainAppScreens/ProfileScreens/editPro
 import EditPersonalData from "../../../screens/MainAppScreens/ProfileScreens/editProfile/EditPersonalData";
 import EditProfileData from "../../../screens/MainAppScreens/ProfileScreens/editProfile/EditProfileData";
 import EditProfileScreen from "../../../screens/MainAppScreens/ProfileScreens/editProfile/EditProfileScreen";
+import PasswordUpdateCodeConfirmation from "../../../screens/MainAppScreens/ProfileScreens/editProfile/authenticationEdit/PasswodUpdateCodeConfirmation";
 import PasswordUpdateForm from "../../../screens/MainAppScreens/ProfileScreens/editProfile/authenticationEdit/PasswordUpdateForm ";
+import PasswordUpdateFormAfter2FA from "../../../screens/MainAppScreens/ProfileScreens/editProfile/authenticationEdit/PasswordUpdateFormAfter2FA";
 import { ProfileNavigationProps } from "../../../types/NavigationParams/profileParams";
 
 
@@ -58,6 +60,26 @@ const ProfileNavigation = () => {
 
 
             <Stack.Screen name='passwordUpdateForm' component={PasswordUpdateForm} options={{
+                headerShown: true,
+                headerBackButtonMenuEnabled: true,
+                headerBackVisible: true,
+                headerTitle: "",
+                headerTransparent: true,
+                animation: "slide_from_right",
+                headerTintColor: theme.colors.onPrimary,
+                headerTitleAlign: "center",
+            }} />
+            <Stack.Screen name='passwordUpdateFormAfter2FA' component={PasswordUpdateFormAfter2FA} options={{
+                headerShown: true,
+                headerBackButtonMenuEnabled: true,
+                headerBackVisible: true,
+                headerTitle: "",
+                headerTransparent: true,
+                animation: "slide_from_right",
+                headerTintColor: theme.colors.onPrimary,
+                headerTitleAlign: "center",
+            }} />
+            <Stack.Screen name='passwordUpdateCodeConfirmation' component={PasswordUpdateCodeConfirmation} options={{
                 headerShown: true,
                 headerBackButtonMenuEnabled: true,
                 headerBackVisible: true,

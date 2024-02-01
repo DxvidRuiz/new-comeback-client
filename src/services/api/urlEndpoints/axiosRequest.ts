@@ -1,5 +1,6 @@
 import { getAsyncStorage } from "../../../localStorage/GetAsyncStorage";
 import { AsyncStorageKeys } from "../../../localStorage/enum/asyncStorageKeys";
+import { EncryptKeys } from "../../security/EncryptKeys";
 import axiosInstance from "./Axios";
 import { API_ENDPOINTS } from "./authEnpoint";
 
@@ -10,7 +11,15 @@ export class Api {
 
   static get = async (path: string) => {
     try {
-      const response = await axiosInstance.get(`${path}`)
+      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN, "string", EncryptKeys.AUTH_ENCRYPT_KEY);
+
+      const response = await axiosInstance.get(
+        `${path}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token ? token : ""}`,
+          }
+        })
       return response.data;
     } catch (error) {
       let errorMessage = "An unexpected error occurred";
@@ -44,11 +53,11 @@ export class Api {
 
   static patch = async (path: string, data: any) => {
     try {
-      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN);
+      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN, "string", EncryptKeys.AUTH_ENCRYPT_KEY);
 
       const response = await axiosInstance.patch(`${path}`, data, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token ? token : ""}`,
         }
       })
       return response.data;
@@ -79,23 +88,34 @@ export class Api {
 
 
   static post = async (path: string, data: any) => {
+
+
+    // const { loading, user: ot } = useSelector((state: RootState) => state.user)
     try {
-      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN);
+
+
+      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN, "string", EncryptKeys.AUTH_ENCRYPT_KEY);
 
       const response = await axiosInstance.post(`${path}`, data, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token ? token : ""}`,
           'Content-Type': 'multipart/form-data'
         }
       });
-      return response.data;
+      // Retornar un objeto que incluya el mensaje de éxito y el código de estado
+      // return { message: 'Request successful', statusCode: response.status, data: response.data };
+      return response
     } catch (error) {
       let errorMessage = "An unexpected error occurred";
+      let errorCode: string | number | undefined = undefined;
 
       if (error.response) {
         // El servidor respondió con un estado de error
-        const serverError = error.response.data?.error || JSON.stringify(error.response.data);
-        errorMessage = `Server Error: ${error.response.status} - ${serverError}`;
+        // const serverError = error.response.data?.error || JSON.stringify(error.response.data);
+        // errorMessage = `errorStatus: ${error.response.status} - ${serverError}`;
+        errorMessage = error.response;
+        // errorCode = error.response.message.data.statusCode
+        // errorCode = error.response.status;
       } else if (error.request) {
         // La solicitud fue hecha pero no se recibió respuesta
         errorMessage = "No response received from the server";
@@ -110,10 +130,11 @@ export class Api {
         errorMessage = `Request Configuration Error: ${error.message}`;
       }
 
-      // Puedes elegir lanzar un error o simplemente devolver un objeto de error
-      throw new Error(errorMessage);
+      // Retornar un objeto que incluya el mensaje de error y el código de error
+      throw { message: errorMessage, errorCode };
     }
   }
+
 }
 
 

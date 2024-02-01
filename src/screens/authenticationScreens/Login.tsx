@@ -3,21 +3,22 @@ import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../common/buttons/CustomButton';
 import AuthContainer from '../../common/containers/AuthContainer';
 import Input from '../../common/input/input';
 import AuthTitleText from '../../common/text/AuthTitleText';
 import MediumText from '../../common/text/MediumText';
 import { loginUser } from '../../redux/actions/auth.actions';
+import { setAccessToken } from '../../redux/slices/authSlice';
 import { refreshUser } from '../../redux/slices/userSlice';
-import { RootState, useAppDispatch } from '../../redux/store/store';
+import { AppDispatch, RootState } from '../../redux/store/store';
 import { loginSchema } from '../../validations/yupSchemas/login-schema';
 
 const initialValues = { email: '', password: '' }
 
 const Login = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const myApiState = useSelector((state: RootState) => state.auth);
 
 
@@ -27,9 +28,11 @@ const Login = () => {
 
     dispatch(loginUser(values)).then(response => {
       if (response.meta.requestStatus === 'fulfilled') {
+
         dispatch(refreshUser(response.payload))
 
 
+        dispatch(setAccessToken(response.payload))
       }
       if (response.meta.requestStatus == 'rejected') {
         const data = response.payload as any;
@@ -48,14 +51,15 @@ const Login = () => {
     initialValues,
     validationSchema: loginSchema,
     onSubmit,
-    enableReinitialize: true
+    enableReinitialize: true,
+
   })
 
   useEffect(() => {
     if (__DEV__) {
       formik.setValues({
-        email: 'ooooo@example.com',
-        password: 'Contraseñaperla1#'
+        email: 'dxvid.ruiz2@gmail.com',
+        password: 'Perla.com+5'
       })
     }
   }, [])
