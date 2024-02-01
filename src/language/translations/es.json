@@ -9,7 +9,9 @@
         "cancel": "Cancelar",
         "confirm": "Confirmar",
         "camera": "Camara",
-        "gallery": "Galeria"
+        "gallery": "Galeria",
+        "resend": "Reenviar.",
+        "resend_in": "Reenviar en:"
     },
     "test": {
         "counting": "contando {{0}} de {{1}}"
@@ -26,10 +28,17 @@
         "profile_information": "Informacion de perfil",
         "password_security": "Contraseña y seguridad",
         "forgot_password": "Olvide mi contraseña",
-        "update_password_subtitle": "Por favor actualice su contraseña."
+        "update_password_subtitle": "Por favor actualice su contraseña.",
+        "verification_code": "Codigo de verificacion",
+        "enter_verification_code": "Por favor ingresa el codigo de verificacion enviado a tu correo.",
+        "no_code_received": "No recibiste el codigo?"
     },
     "message": {
-        "password_change": "Su contraseña debe tener al menos 6 caracteres y debe incluir una combinación de números, letras y caracteres especiales.",
+        "password_change": "Cambio de contraseña exitoso.",
         "change_email_message": "Para completar esta accion se enviara un codigo de confirmacion a tu actual correo."
+    },
+    "error": {
+        "password_update_error": "Error al actualizar contraseña.",
+        "current_password_incorrect": "Contraseña actual incorrecta."
     }
 }

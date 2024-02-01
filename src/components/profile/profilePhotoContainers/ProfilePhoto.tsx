@@ -1,5 +1,5 @@
 // ProfilePhoto.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -14,11 +14,12 @@ import { RootState, useAppDispatch } from '../../../redux/store/store';
 
 const ProfilePhoto: React.FC<any> = () => {
     const { loading, user: data } = useSelector((state: RootState) => state.user)
-    const profilePhotoRoute = useSelector((state: RootState) => state.user.user.profile?.profilePhotoRoute);
+    const profilePhotoRoute = useSelector((state: RootState) => state.user?.user?.profile?.profilePhotoRoute);
+
 
     const [isVisible, setIsVisible] = useState(false);
     const [imageToUpload, setImageToUpload] = useState<ImageInfo>(null);
-    const [profileImage, setProfileImage] = useState(profilePhotoRoute);
+    const [profileImage, setProfileImage] = useState(profilePhotoRoute ? profilePhotoRoute : "../../../../assets/Profile/profile-placeholder.jpg");
 
     // const dispatch = useDispatch<AppThunkDispatch>();
     const dispatch = useAppDispatch()
@@ -36,6 +37,10 @@ const ProfilePhoto: React.FC<any> = () => {
     const handleImageCanceled = () => {
         setIsVisible(false);
     };
+    useEffect(() => {
+        setProfileImage(profilePhotoRoute)
+    }, [profilePhotoRoute])
+
     const handleImageConfirm = async () => {
         if (imageToUpload) {
 
@@ -54,8 +59,10 @@ const ProfilePhoto: React.FC<any> = () => {
 
             try {
                 // Dispatch la acción para cargar la foto y manejar la respuesta
-                await dispatch(uploadProfilePhoto(formData));
-                // const resultAction = dispatch(updateUser(formData));
+                const imagereturned = await dispatch(uploadProfilePhoto(formData));
+
+                console.log("data obtenida dentro de la imagen retornada ", imagereturned);
+
 
                 setProfileImage(profilePhotoRoute)
                 // Puedes acceder a la respuesta exitosa en action.payload si es necesario
