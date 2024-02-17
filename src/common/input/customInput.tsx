@@ -1,4 +1,8 @@
-import React from 'react';
+
+
+
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
@@ -17,7 +21,7 @@ type Props = {
     keyboardType?: 'default' | 'number-pad' | 'decimal-pad' | 'numeric' | 'email-address' | 'phone-pad' | 'url'
 }
 
-const Input = ({ formik, value, handleChange, name, error, label, IconLeft, IconRight, secureTextEntry, keyboardType, externalOnChangeText }: Props) => {
+const CustomInput = ({ formik, value, handleChange, name, error, label, IconLeft, IconRight, secureTextEntry, keyboardType, externalOnChangeText }: Props) => {
 
     const theme = useTheme();
     const styles = style(theme)
@@ -29,6 +33,8 @@ const Input = ({ formik, value, handleChange, name, error, label, IconLeft, Icon
             externalOnChangeText(text);
         }
     };
+
+    const [passwordVisibility, setPasswordVisibility] = useState(false);
 
 
 
@@ -48,8 +54,15 @@ const Input = ({ formik, value, handleChange, name, error, label, IconLeft, Icon
                         }} style={styles.input}
                         error={Boolean(formik.errors[name])}
                         left={IconLeft ? <TextInput.Icon icon={IconLeft} color={iconColor} /> : undefined} // Agrega el icono personalizado
-                        right={IconRight ? <TextInput.Icon icon={IconRight} color={iconColor} /> : undefined} // Agrega el icono personalizado
-                        secureTextEntry={secureTextEntry}
+                        right={secureTextEntry ? <TextInput.Icon onPress={() => setPasswordVisibility(!passwordVisibility)} icon={passwordVisibility ?
+
+                            () => <MaterialIcons name='remove-red-eye' color={theme.colors.onPrimary} size={24} />
+                            :
+                            () => <MaterialCommunityIcons name="eye-off" size={24} color={theme.colors.onPrimary} />
+
+                        } color={iconColor} />
+                            : IconRight ? <TextInput.Icon icon={IconRight} color={iconColor} /> : undefined} // Agrega el icono personalizado
+                        secureTextEntry={secureTextEntry ? passwordVisibility : undefined}
                         onBlur={formik.handleBlur(name)} // Agrega la prop onBlur y utiliza formik.handleBlur para manejar el evento
                     />
                     {
@@ -82,4 +95,4 @@ const style = (theme) => StyleSheet.create({
     },
 })
 
-export default Input
+export default CustomInput
