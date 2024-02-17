@@ -33,7 +33,6 @@ const EditAuthData = () => {
     const navigation = useNavigation<EditAuthDataNavigationProp>()
 
 
-    // const stateData = useSelector((state: RootState) => state.registerData);
 
     // --------------------------------- max date validation
     const maxDate = new Date();

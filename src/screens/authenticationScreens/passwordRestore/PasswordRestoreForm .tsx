@@ -7,25 +7,27 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import { alarmError, alarmsuccess } from '../../../../../common/Alerts/showMessage';
-import Button from '../../../../../common/buttons/CustomButton';
-import FormContainer from '../../../../../common/containers/FormContainer';
-import Input from '../../../../../common/input/input';
-import AuthTitleText from '../../../../../common/text/AuthTitleText';
-import SmallText from '../../../../../common/text/SmallText';
-import { updatePasswordAfter2FA } from '../../../../../redux/actions/auth.actions';
-import { RootState, useAppDispatch } from '../../../../../redux/store/store';
-import { ProfileNavigationProps } from '../../../../../types/NavigationParams/profileParams';
-import { passwordUpdateSchema } from '../../../../../validations/yupSchemas/passwordUpdateSchema';
+import { alarmError, alarmsuccess } from '../../../common/Alerts/showMessage';
+import CustomButton from '../../../common/buttons/CustomButton';
+import FormContainer from '../../../common/containers/FormContainer';
+import Input from '../../../common/input/input';
+import AuthTitleText from '../../../common/text/AuthTitleText';
+import SmallText from '../../../common/text/SmallText';
+import { updatePassword } from '../../../redux/actions/auth.actions';
+import { RootState, useAppDispatch } from '../../../redux/store/store';
+import { ProfileNavigationProps } from '../../../types/NavigationParams/profileParams';
+import { passwordUpdateValidationSchema } from '../../../validations/yupSchemas/passwordUpdateSchema';
+
 const initialValues = {
-    password: '',
-    passwordConfirmation: ''
+    currentPassword: '',
+    newPassword: '',
+    newPasswordConfirmation: ''
 };
 
-type editProfileataProp = NativeStackNavigationProp<ProfileNavigationProps, 'passwordUpdateFormAfter2FA'>;
+type editProfileataProp = NativeStackNavigationProp<ProfileNavigationProps, 'passwordUpdateForm'>;
 
 
-const PasswordUpdateFormAfter2FA = () => {
+const PasswordRestoreForm = () => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation()
     const navigation = useNavigation<editProfileataProp>()
@@ -35,18 +37,20 @@ const PasswordUpdateFormAfter2FA = () => {
     const loading = useSelector((state: RootState) => state.multipleActions.loading)
     const [passwordVisibility, setPasswordVisibility] = useState(false);
 
+
     const onSubmit = (
         values: typeof initialValues,
         { setSubmitting, setFieldError, setFieldValue }: FormikHelpers<typeof initialValues>
     ) => {
         const data = {
-            password: values.password
+            currentPassword: values.currentPassword,
+            newPassword: values.newPassword
         };
 
-        dispatch(updatePasswordAfter2FA(data))
+        dispatch(updatePassword(data))
             .then((actionResult) => {
                 if (actionResult.meta.requestStatus === "fulfilled") {
-                    console.log("succesfull response");
+
                     alarmsuccess({
                         duration: 5000,
                         title: t("message.password_change")
@@ -55,14 +59,14 @@ const PasswordUpdateFormAfter2FA = () => {
                     navigation.navigate("editAuthData");
 
                     // Lógica después de una actualización exitosa...
-                } if (actionResult.meta.requestStatus === "rejected") {
+                } else if (actionResult.meta.requestStatus === "rejected") {
                     const errorPayload = actionResult.payload as any;
                     const errorCode = errorPayload?.message?.status;
 
-                    if (errorCode === 400) {
+                    if (errorCode === 401) {
                         // Contraseña actual incorrecta
 
-                        setFieldError("password", t("error.password_must_be_different"))
+                        setFieldError("currentPassword", t("error.current_password_incorrect"))
                         setSubmitting(false)
                         console.log(t("error.current_password_incorrect"));
                         // También puedes establecer un error de campo específico si es necesario
@@ -82,7 +86,7 @@ const PasswordUpdateFormAfter2FA = () => {
                         // Error en la red
                         alarmError({
                             duration: 5000,
-                            title: t("error.network_error"),
+                            title: "Error en red",
                         });
                     }
                 }
@@ -90,7 +94,7 @@ const PasswordUpdateFormAfter2FA = () => {
             .catch((error) => {
                 console.error("Error general:", error);
 
-                setSubmitting(false)
+                // setSubmitting(false)
                 // alarmError({
                 //     duration: 5000,
                 //     title: t("error.password_update_password"),
@@ -98,15 +102,17 @@ const PasswordUpdateFormAfter2FA = () => {
             });
 
     };
+
+
     const formik = useFormik({
         initialValues,
-        validationSchema: passwordUpdateSchema,
+        validationSchema: passwordUpdateValidationSchema,
         onSubmit,
         enableReinitialize: true,
         validateOnBlur: true
+
+
     });
-
-
 
     return (
 
@@ -122,30 +128,36 @@ const PasswordUpdateFormAfter2FA = () => {
                         <SmallText text={t("label.update_password_subtitle")} />
                     </View>
 
-                    <View style={styles.inputContainer}>
-                        <TouchableOpacity onPress={() => setPasswordVisibility(!passwordVisibility)} style={styles.passwordVisibility}>
-                            {passwordVisibility ?
-                                <MaterialIcons name='remove-red-eye' color={theme.colors.onPrimary} size={24} /> :
-                                <MaterialCommunityIcons name="eye-off" size={24} color="black" />
-                            }
-                        </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPasswordVisibility(!passwordVisibility)} style={styles.passwordVisibility}>
+                        {passwordVisibility ?
+                            <MaterialIcons name='remove-red-eye' color={theme.colors.onPrimary} size={24} /> :
+                            <MaterialCommunityIcons name="eye-off" size={24} color="black" />
+                        }
+                    </TouchableOpacity>
 
+                    <View style={styles.inputContainer}>
+                        <Input
+                            label={t("label.current_password")}
+                            formik={formik}
+                            name="currentPassword"
+                            secureTextEntry={passwordVisibility}
+                        />
                         <Input
                             label={t("label.new_password")}
                             formik={formik}
-                            name="password"
+                            name="newPassword"
                             secureTextEntry={passwordVisibility}
                         />
                         <Input
                             label={t("label.confirm_password")}
                             formik={formik}
-                            name="passwordConfirmation"
+                            name="newPasswordConfirmation"
                             secureTextEntry={passwordVisibility}
                         />
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <Button
+                        <CustomButton
                             label={t("actions.update")}
                             size="medium"
                             loading={loading}
@@ -155,13 +167,30 @@ const PasswordUpdateFormAfter2FA = () => {
                             textColor={theme.colors.primary}
                         />
                     </View>
+
+                    <View style={styles.forgotPasswordContainer}>
+
+                        <TouchableOpacity onPress={() =>
+                            navigation.navigate("passwordUpdateCodeConfirmation")
+                            // alarmError({
+                            //     duration: 8000,
+                            //     title: t("message.password_change"),
+                            // })
+
+                        }>
+
+                            <SmallText text={t("label.forgot_password")} />
+                        </TouchableOpacity>
+
+
+                    </View>
                 </View>
             </View>
         </FormContainer>
     );
 };
 
-export default PasswordUpdateFormAfter2FA;
+export default PasswordRestoreForm;
 
 const style = (theme: MD3Theme) =>
     StyleSheet.create({
@@ -185,8 +214,9 @@ const style = (theme: MD3Theme) =>
         },
         titleText: {
 
-            color: 'white',
-            marginRight: 8,
+            // Estilo específico para el texto "hhh"
+            color: 'white', // Puedes ajustar el color según sea necesario
+            marginRight: 8, // Espacio entre el texto y los campos de entrada
         },
         titleContainer: {
             flexDirection: 'row',

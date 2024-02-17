@@ -81,8 +81,8 @@ const ProfileNavigation = () => {
             }} />
             <Stack.Screen name='passwordUpdateCodeConfirmation' component={PasswordUpdateCodeConfirmation} options={{
                 headerShown: true,
-                headerBackButtonMenuEnabled: true,
-                headerBackVisible: true,
+                headerBackButtonMenuEnabled: false,
+                headerBackVisible: false,
                 headerTitle: "",
                 headerTransparent: true,
                 animation: "slide_from_right",

@@ -51,7 +51,6 @@ const EditPersonalData = () => {
     console.log(data, 'niier----');
     const navigation = useNavigation<editPersonalDataProp>()
 
-    // const stateData = useSelector((state: RootState) => state.registerData);
 
 
 

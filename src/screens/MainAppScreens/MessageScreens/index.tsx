@@ -1,1 +1,1 @@
-export { default } from "./MessagesScreen"
+export { default } from "./newPostOptionsScreen";

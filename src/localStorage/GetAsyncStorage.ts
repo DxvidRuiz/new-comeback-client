@@ -7,7 +7,6 @@ export const getAsyncStorage = async <T>(clave: string, dataType: 'string' | 'ob
     const encryptedData = await AsyncStorage.getItem(clave);
 
 
-    console.log(encryptedData);
 
 
     if (encryptedData) {

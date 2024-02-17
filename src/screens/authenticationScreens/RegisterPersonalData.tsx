@@ -16,12 +16,12 @@ import SmallText from '../../common/text/SmallText';
 import GenderSelection from '../../components/PersonalData/GenderSelection';
 import CommonDatePicker from '../../components/date/CommonDatePicker';
 import { setPersonalData } from '../../redux/slices/registerFormSlice';
-import { RootStackParams } from '../../types/NavigationParams/AppTabNavigationProps';
+import { AuthNavigationParams } from '../../types/NavigationParams/AuthNavigationParams';
 import { personalDataSchema } from '../../validations/yupSchemas/registerSchema';
 
 
 
-type AuthNavigationProp = NativeStackNavigationProp<RootStackParams, 'registerPersonalData'>;
+type AuthNavigationProp = NativeStackNavigationProp<AuthNavigationParams, 'registerPersonalData'>;
 
 
 const RegisterPersonalData = () => {
@@ -34,7 +34,6 @@ const RegisterPersonalData = () => {
 
   const navigation = useNavigation<AuthNavigationProp>()
 
-  // const stateData = useSelector((state: RootState) => state.registerData);
 
   // --------------------------------- max date validation
   const maxDate = new Date();

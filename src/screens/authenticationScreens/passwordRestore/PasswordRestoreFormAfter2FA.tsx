@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FormikHelpers, useFormik } from 'formik';
 import React, { useState } from 'react';
@@ -7,43 +7,53 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import { alarmError, alarmsuccess } from '../../../../../common/Alerts/showMessage';
-import Button from '../../../../../common/buttons/CustomButton';
-import FormContainer from '../../../../../common/containers/FormContainer';
-import Input from '../../../../../common/input/input';
-import AuthTitleText from '../../../../../common/text/AuthTitleText';
-import SmallText from '../../../../../common/text/SmallText';
-import { updatePasswordAfter2FA } from '../../../../../redux/actions/auth.actions';
-import { RootState, useAppDispatch } from '../../../../../redux/store/store';
-import { ProfileNavigationProps } from '../../../../../types/NavigationParams/profileParams';
-import { passwordUpdateSchema } from '../../../../../validations/yupSchemas/passwordUpdateSchema';
+import { alarmError, alarmsuccess } from '../../../common/Alerts/showMessage';
+import CustomButton from '../../../common/buttons/CustomButton';
+import FormContainer from '../../../common/containers/FormContainer';
+import Input from '../../../common/input/input';
+import AuthTitleText from '../../../common/text/AuthTitleText';
+import SmallText from '../../../common/text/SmallText';
+import { restorePasswordAfter2FA } from '../../../redux/actions/auth.actions';
+import { RootState, useAppDispatch } from '../../../redux/store/store';
+import { AuthNavigationParams } from '../../../types/NavigationParams/AuthNavigationParams';
+import { passwordUpdateSchema } from '../../../validations/yupSchemas/passwordUpdateSchema';
 const initialValues = {
     password: '',
     passwordConfirmation: ''
 };
 
-type editProfileataProp = NativeStackNavigationProp<ProfileNavigationProps, 'passwordUpdateFormAfter2FA'>;
+type navigationProps = NativeStackNavigationProp<AuthNavigationParams, 'passwordRestoreFormAfter2FA'>;
+type routeProps = RouteProp<AuthNavigationParams, 'passwordRestoreFormAfter2FA'>;
 
 
-const PasswordUpdateFormAfter2FA = () => {
+
+const PasswordRestoreFormAfter2FA = () => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation()
-    const navigation = useNavigation<editProfileataProp>()
+    const navigation = useNavigation<navigationProps>()
     const theme = useTheme();
     const styles = style(theme);
 
     const loading = useSelector((state: RootState) => state.multipleActions.loading)
+    const route = useRoute<routeProps>();
+
     const [passwordVisibility, setPasswordVisibility] = useState(false);
+    const { email } = route.params;
+    const [emailStored, setEmailStores] = useState(email);
+
+
+
 
     const onSubmit = (
         values: typeof initialValues,
         { setSubmitting, setFieldError, setFieldValue }: FormikHelpers<typeof initialValues>
     ) => {
         const data = {
-            password: values.password
+            password: values.password,
+            email: emailStored
         };
 
-        dispatch(updatePasswordAfter2FA(data))
+        dispatch(restorePasswordAfter2FA(data))
             .then((actionResult) => {
                 if (actionResult.meta.requestStatus === "fulfilled") {
                     console.log("succesfull response");
@@ -52,12 +62,13 @@ const PasswordUpdateFormAfter2FA = () => {
                         title: t("message.password_change")
                     });
 
-                    navigation.navigate("editAuthData");
+                    navigation.navigate("login");
 
                     // Lógica después de una actualización exitosa...
                 } if (actionResult.meta.requestStatus === "rejected") {
                     const errorPayload = actionResult.payload as any;
                     const errorCode = errorPayload?.message?.status;
+
 
                     if (errorCode === 400) {
                         // Contraseña actual incorrecta
@@ -145,7 +156,7 @@ const PasswordUpdateFormAfter2FA = () => {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <Button
+                        <CustomButton
                             label={t("actions.update")}
                             size="medium"
                             loading={loading}
@@ -161,7 +172,7 @@ const PasswordUpdateFormAfter2FA = () => {
     );
 };
 
-export default PasswordUpdateFormAfter2FA;
+export default PasswordRestoreFormAfter2FA;
 
 const style = (theme: MD3Theme) =>
     StyleSheet.create({

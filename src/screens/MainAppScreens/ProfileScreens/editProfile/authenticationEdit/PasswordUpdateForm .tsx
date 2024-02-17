@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FormikHelpers, useFormik } from 'formik';
@@ -12,7 +13,6 @@ import FormContainer from '../../../../../common/containers/FormContainer';
 import Input from '../../../../../common/input/input';
 import AuthTitleText from '../../../../../common/text/AuthTitleText';
 import SmallText from '../../../../../common/text/SmallText';
-import EmailConfirmationModal from '../../../../../components/Modals/EmailConfirmationModal';
 import { updatePassword } from '../../../../../redux/actions/auth.actions';
 import { RootState, useAppDispatch } from '../../../../../redux/store/store';
 import { ProfileNavigationProps } from '../../../../../types/NavigationParams/profileParams';
@@ -34,8 +34,8 @@ const PasswordUpdateForm = () => {
     const theme = useTheme();
     const styles = style(theme);
 
-    const [showPasswordModal, setShowPasswordModal] = useState(false);
     const loading = useSelector((state: RootState) => state.multipleActions.loading)
+    const [passwordVisibility, setPasswordVisibility] = useState(false);
 
 
     const onSubmit = (
@@ -50,7 +50,6 @@ const PasswordUpdateForm = () => {
         dispatch(updatePassword(data))
             .then((actionResult) => {
                 if (actionResult.meta.requestStatus === "fulfilled") {
-                    console.log("Respuesta exitosa");
 
                     alarmsuccess({
                         duration: 5000,
@@ -95,7 +94,7 @@ const PasswordUpdateForm = () => {
             .catch((error) => {
                 console.error("Error general:", error);
 
-                setSubmitting(false)
+                // setSubmitting(false)
                 // alarmError({
                 //     duration: 5000,
                 //     title: t("error.password_update_password"),
@@ -115,8 +114,6 @@ const PasswordUpdateForm = () => {
 
     });
 
-
-
     return (
 
         <FormContainer>
@@ -131,24 +128,31 @@ const PasswordUpdateForm = () => {
                         <SmallText text={t("label.update_password_subtitle")} />
                     </View>
 
+                    <TouchableOpacity onPress={() => setPasswordVisibility(!passwordVisibility)} style={styles.passwordVisibility}>
+                        {passwordVisibility ?
+                            <MaterialIcons name='remove-red-eye' color={theme.colors.onPrimary} size={24} /> :
+                            <MaterialCommunityIcons name="eye-off" size={24} color="black" />
+                        }
+                    </TouchableOpacity>
+
                     <View style={styles.inputContainer}>
                         <Input
                             label={t("label.current_password")}
                             formik={formik}
                             name="currentPassword"
-                            secureTextEntry
+                            secureTextEntry={passwordVisibility}
                         />
                         <Input
                             label={t("label.new_password")}
                             formik={formik}
                             name="newPassword"
-                            secureTextEntry
+                            secureTextEntry={passwordVisibility}
                         />
                         <Input
                             label={t("label.confirm_password")}
                             formik={formik}
                             name="newPasswordConfirmation"
-                            secureTextEntry
+                            secureTextEntry={passwordVisibility}
                         />
                     </View>
 
@@ -167,8 +171,7 @@ const PasswordUpdateForm = () => {
                     <View style={styles.forgotPasswordContainer}>
 
                         <TouchableOpacity onPress={() =>
-                            setShowPasswordModal(true)
-
+                            navigation.navigate("passwordUpdateCodeConfirmation")
                             // alarmError({
                             //     duration: 8000,
                             //     title: t("message.password_change"),
@@ -179,7 +182,7 @@ const PasswordUpdateForm = () => {
                             <SmallText text={t("label.forgot_password")} />
                         </TouchableOpacity>
 
-                        <EmailConfirmationModal currentEmail='eeee' isVisible={showPasswordModal} onCancel={() => setShowPasswordModal(false)} onConfirm={() => { navigation.navigate("passwordUpdateCodeConfirmation"); setShowPasswordModal(false) }} />
+
                     </View>
                 </View>
             </View>
@@ -226,5 +229,10 @@ const style = (theme: MD3Theme) =>
         },
         forgotPasswordText: {
             color: theme.colors.onBackground
+        },
+        passwordVisibility: {
+            alignItems: "flex-end",
+
+
         }
     });

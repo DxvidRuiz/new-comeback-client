@@ -83,7 +83,7 @@ const ProfilePhoto: React.FC<any> = () => {
     return (
         <View style={styles.avatarContainer}>
             <CommonImagePicker onImageSelected={handleImageSelected}>
-                <Avatar.Image size={120} source={{ uri: profileImage }} style={styles.profilePhoto} />
+                <Avatar.Image size={80} source={{ uri: profileImage }} style={styles.profilePhoto} />
             </CommonImagePicker>
             <ImageModal imageUri={profileImage} onAccept={handleImageConfirm} onCancel={handleImageCanceled} isVisible={isVisible} />
         </View>

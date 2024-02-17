@@ -6,7 +6,8 @@ import CustomButton from '../../common/buttons/CustomButton';
 
 interface EmailChangeConfirmationModalProps {
   isVisible: boolean;
-  currentEmail: string;
+  currentEmail?: string;
+  message?: string
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -14,6 +15,7 @@ interface EmailChangeConfirmationModalProps {
 const EmailConfirmationModal: React.FC<EmailChangeConfirmationModalProps> = ({
   isVisible,
   currentEmail,
+  message,
   onCancel,
   onConfirm,
 }) => {
@@ -27,7 +29,7 @@ const EmailConfirmationModal: React.FC<EmailChangeConfirmationModalProps> = ({
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
           <Text style={styles.text}>
-            {t('message.change_email_message', { email: currentEmail })}
+            {message}
           </Text>
           <View style={styles.buttonContainer}>
             <CustomButton label={t('actions.cancel')} color={"tertiary"} textColor={"#000000"} onPress={onCancel} type="elevated" />
