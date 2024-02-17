@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FormikHelpers, useFormik } from 'formik';
@@ -12,16 +13,13 @@ import FormContainer from '../../../../../common/containers/FormContainer';
 import Input from '../../../../../common/input/input';
 import AuthTitleText from '../../../../../common/text/AuthTitleText';
 import SmallText from '../../../../../common/text/SmallText';
-import EmailConfirmationModal from '../../../../../components/Modals/EmailConfirmationModal';
-import { updatePassword } from '../../../../../redux/actions/auth.actions';
+import { updatePasswordAfter2FA } from '../../../../../redux/actions/auth.actions';
 import { RootState, useAppDispatch } from '../../../../../redux/store/store';
 import { ProfileNavigationProps } from '../../../../../types/NavigationParams/profileParams';
-import { passwordUpdateValidationSchema } from '../../../../../validations/yupSchemas/passwordUpdateSchema';
-
+import { passwordUpdateSchema } from '../../../../../validations/yupSchemas/passwordUpdateSchema';
 const initialValues = {
-    currentPassword: '',
-    newPassword: '',
-    newPasswordConfirmation: ''
+    password: '',
+    passwordConfirmation: ''
 };
 
 type editProfileataProp = NativeStackNavigationProp<ProfileNavigationProps, 'passwordUpdateFormAfter2FA'>;
@@ -34,24 +32,21 @@ const PasswordUpdateFormAfter2FA = () => {
     const theme = useTheme();
     const styles = style(theme);
 
-    const [showPasswordModal, setShowPasswordModal] = useState(false);
     const loading = useSelector((state: RootState) => state.multipleActions.loading)
-
+    const [passwordVisibility, setPasswordVisibility] = useState(false);
 
     const onSubmit = (
         values: typeof initialValues,
         { setSubmitting, setFieldError, setFieldValue }: FormikHelpers<typeof initialValues>
     ) => {
         const data = {
-            currentPassword: values.currentPassword,
-            newPassword: values.newPassword
+            password: values.password
         };
 
-        dispatch(updatePassword(data))
+        dispatch(updatePasswordAfter2FA(data))
             .then((actionResult) => {
                 if (actionResult.meta.requestStatus === "fulfilled") {
-                    console.log("Respuesta exitosa");
-
+                    console.log("succesfull response");
                     alarmsuccess({
                         duration: 5000,
                         title: t("message.password_change")
@@ -60,14 +55,14 @@ const PasswordUpdateFormAfter2FA = () => {
                     navigation.navigate("editAuthData");
 
                     // Lógica después de una actualización exitosa...
-                } else if (actionResult.meta.requestStatus === "rejected") {
+                } if (actionResult.meta.requestStatus === "rejected") {
                     const errorPayload = actionResult.payload as any;
                     const errorCode = errorPayload?.message?.status;
 
-                    if (errorCode === 401) {
+                    if (errorCode === 400) {
                         // Contraseña actual incorrecta
 
-                        setFieldError("currentPassword", t("error.current_password_incorrect"))
+                        setFieldError("password", t("error.password_must_be_different"))
                         setSubmitting(false)
                         console.log(t("error.current_password_incorrect"));
                         // También puedes establecer un error de campo específico si es necesario
@@ -87,7 +82,7 @@ const PasswordUpdateFormAfter2FA = () => {
                         // Error en la red
                         alarmError({
                             duration: 5000,
-                            title: "Error en red",
+                            title: t("error.network_error"),
                         });
                     }
                 }
@@ -103,16 +98,12 @@ const PasswordUpdateFormAfter2FA = () => {
             });
 
     };
-
-
     const formik = useFormik({
         initialValues,
-        validationSchema: passwordUpdateValidationSchema,
+        validationSchema: passwordUpdateSchema,
         onSubmit,
         enableReinitialize: true,
         validateOnBlur: true
-
-
     });
 
 
@@ -132,23 +123,24 @@ const PasswordUpdateFormAfter2FA = () => {
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Input
-                            label={t("label.current_password")}
-                            formik={formik}
-                            name="currentPassword"
-                            secureTextEntry
-                        />
+                        <TouchableOpacity onPress={() => setPasswordVisibility(!passwordVisibility)} style={styles.passwordVisibility}>
+                            {passwordVisibility ?
+                                <MaterialIcons name='remove-red-eye' color={theme.colors.onPrimary} size={24} /> :
+                                <MaterialCommunityIcons name="eye-off" size={24} color="black" />
+                            }
+                        </TouchableOpacity>
+
                         <Input
                             label={t("label.new_password")}
                             formik={formik}
-                            name="newPassword"
-                            secureTextEntry
+                            name="password"
+                            secureTextEntry={passwordVisibility}
                         />
                         <Input
                             label={t("label.confirm_password")}
                             formik={formik}
-                            name="newPasswordConfirmation"
-                            secureTextEntry
+                            name="passwordConfirmation"
+                            secureTextEntry={passwordVisibility}
                         />
                     </View>
 
@@ -162,24 +154,6 @@ const PasswordUpdateFormAfter2FA = () => {
                             color='secondary'
                             textColor={theme.colors.primary}
                         />
-                    </View>
-
-                    <View style={styles.forgotPasswordContainer}>
-
-                        <TouchableOpacity onPress={() =>
-                            setShowPasswordModal(true)
-
-                            // alarmError({
-                            //     duration: 8000,
-                            //     title: t("message.password_change"),
-                            // })
-
-                        }>
-
-                            <SmallText text={t("label.forgot_password")} />
-                        </TouchableOpacity>
-
-                        <EmailConfirmationModal currentEmail='eeee' isVisible={showPasswordModal} onCancel={() => setShowPasswordModal(false)} onConfirm={() => { navigation.navigate("passwordUpdateCodeConfirmation"); setShowPasswordModal(false) }} />
                     </View>
                 </View>
             </View>
@@ -211,9 +185,8 @@ const style = (theme: MD3Theme) =>
         },
         titleText: {
 
-            // Estilo específico para el texto "hhh"
-            color: 'white', // Puedes ajustar el color según sea necesario
-            marginRight: 8, // Espacio entre el texto y los campos de entrada
+            color: 'white',
+            marginRight: 8,
         },
         titleContainer: {
             flexDirection: 'row',
@@ -226,5 +199,10 @@ const style = (theme: MD3Theme) =>
         },
         forgotPasswordText: {
             color: theme.colors.onBackground
+        },
+        passwordVisibility: {
+            alignItems: "flex-end",
+
+
         }
     });

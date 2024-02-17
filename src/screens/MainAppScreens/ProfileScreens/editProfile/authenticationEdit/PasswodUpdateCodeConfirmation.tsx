@@ -1,8 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 import { alarmError, alarmsuccess } from '../../../../../common/Alerts/showMessage';
 import CustomButton from '../../../../../common/buttons/CustomButton';
 import CustomCodeInput from '../../../../../common/input/CustomCodeInput';
@@ -11,13 +13,11 @@ import MediumText from '../../../../../common/text/MediumText';
 import SmallText from '../../../../../common/text/SmallText';
 import SubtitleText from '../../../../../common/text/SubtitleText';
 import CountdownTimer from '../../../../../common/timer/CountdownTimer';
-import { generatePasswordUpdateOTPcode } from '../../../../../redux/actions/auth.actions';
-import { useAppDispatch } from '../../../../../redux/store/store';
+import EmailConfirmationModal from '../../../../../components/Modals/EmailConfirmationModal';
+import { generatePasswordUpdateOTPcode, passwordUpdateCodeValidation } from '../../../../../redux/actions/auth.actions';
+import { RootState, useAppDispatch } from '../../../../../redux/store/store';
 import { ProfileNavigationProps } from '../../../../../types/NavigationParams/profileParams';
 
-const initialValues = {
-    confirmationCode: null,
-};
 
 type PasswordUpdateCodeConfirmationProps = {
     onCancel: () => void;
@@ -35,6 +35,8 @@ const PasswordUpdateCodeConfirmation: React.FC<PasswordUpdateCodeConfirmationPro
     const theme = useTheme();
     const styles = style(theme);
     const dispatch = useAppDispatch();
+    const navigation = useNavigation<editProfileataProp>()
+    const loading = useSelector((state: RootState) => state.multipleActions.loading)
 
     const [startTimer, setStartTimer] = useState(false);
     const [isValid, setIsValid] = useState(false);
@@ -43,68 +45,84 @@ const PasswordUpdateCodeConfirmation: React.FC<PasswordUpdateCodeConfirmationPro
     const [verificationCodeStatus, setVerificationCodeStatus] = useState({});
     const [shouldClear, setShouldClear] = useState(() => () => false); // Inicialmente, retorna 'false'
     const [isError, setIsError] = useState(false); // Inicialmente, retorna 'false'
-
+    const [isOtpGenerated, setIsOtpGenerated] = useState(false);
+    const [showPasswordModal, setShowPasswordModal] = useState(true);
 
 
     const handleStartButtonClick = () => {
         setStartTimer(true); // Iniciar o reiniciar la cuenta regresiva
         setIsTimerVisible(true);
+        GetOTP()
     };
 
     const onSubmit = async (
         value: any) => {
         // Llamar a la función onConfirm con el código ingresado
         // setSubmitting(false);
+        const otp = `${value.verificationCode}`
 
-        console.log("valor listo para enviar", value);
+        const date = { verification_code: otp }
 
-
-
-    };
-    const GetOTP = async () => {
-
-
-        dispatch(generatePasswordUpdateOTPcode()).then(response => {
+        dispatch(passwordUpdateCodeValidation(date)).then(response => {
             if (response.meta.requestStatus === 'fulfilled') {
-                alarmsuccess({
-                    duration: 4000,
-                    title: "Codigo enviado",
-                });
+
+                console.log("Verification code resquest", response);
+
+                setShouldClear(() => () => true); // Cambia a una función que retorna 'true'
+                navigation.navigate("passwordUpdateFormAfter2FA")
+
             }
             if (response.meta.requestStatus === "rejected") {
-
-
+                handleClear()
             }
 
         })
 
 
+    };
 
-        // handleStartButtonClick()
 
+    const GetOTP = async () => {
+        dispatch(generatePasswordUpdateOTPcode()).then(response => {
+            if (response.meta.requestStatus === 'fulfilled') {
+                alarmsuccess({
+                    duration: 4000,
+                    title: t("message.verification_code_sent"),
+                });
+            }
+            if (response.meta.requestStatus === "rejected") {
+
+                alarmError({
+                    duration: 4000,
+                    title: t("error.incorrect_expired_code"),
+                });
+            }
+
+        })
     }
 
 
     const handleTimerEnd = () => {
-        console.log('¡La cuenta regresiva ha llegado a cero!');
-        // setStartTimer(false); // Detener la cuenta regresiva cuando llega a cero
+        setStartTimer(false); // Detener la cuenta regresiva cuando llega a cero
         setIsTimerVisible(false); // Ocultar el temporizador cuando se detiene
     };
     const handleClear = () => {
         alarmError({
             duration: 4000,
-            title: "Passcode erronea",
+            title: t("error.incorrect_expired_code"),
         });
         setShouldClear(() => () => true); // Cambia a una función que retorna 'true'
     };
 
 
-    useEffect(() => {
-        if (startTimer) {
-            // GetOTP();
-        }
-    }, [startTimer]);
 
+    const onConfirmModal = async () => {
+        navigation.navigate("passwordUpdateCodeConfirmation");
+        setShowPasswordModal(false)
+        setIsTimerVisible(true)
+        GetOTP()
+
+    }
 
 
     useEffect(() => {
@@ -113,6 +131,11 @@ const PasswordUpdateCodeConfirmation: React.FC<PasswordUpdateCodeConfirmationPro
             setVerificationCodeStatus({ verificationCode: verificationCode });
         }
     }, [isValid, digitsArray]);
+
+
+    // useEffect(() => {
+    //     GetOTP()
+    // }, [isOtpGenerated]);
 
     const digitsListHandler = (list: number[]) => {
         setDigitsArray(list);
@@ -130,12 +153,12 @@ const PasswordUpdateCodeConfirmation: React.FC<PasswordUpdateCodeConfirmationPro
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.onSecondary }]}>
-
-
             {/* <LoadingModal isVisible={true} text='Sending code...' /> */}
             {/* <Text style={{ color: 'black' }}>{JSON.stringify(formik.errors)}</Text>
             <Text style={{ color: 'black' }}>{JSON.stringify(formik.values)}</Text> */}
             <View style={styles.content}>
+
+                <EmailConfirmationModal isVisible={showPasswordModal} message={t("message.change_email_message")} onCancel={() => { navigation.goBack(), setShowPasswordModal(false) }} onConfirm={() => { onConfirmModal() }} />
                 <View style={styles.titleContainer}>
                     <SubtitleText text={t("label.verification_code")} />
                 </View>
@@ -165,7 +188,7 @@ const PasswordUpdateCodeConfirmation: React.FC<PasswordUpdateCodeConfirmationPro
                     />
                 </View>
 
-                <Button title='borrar' onPress={() => handleClear()} />
+                {/* <Button title='borrar' onPress={() => handleClear()} /> */}
 
                 <View style={styles.inputContainer}>
                     <SmallText text={t('label.no_code_received')} />

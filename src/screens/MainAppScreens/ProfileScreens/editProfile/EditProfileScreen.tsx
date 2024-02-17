@@ -37,7 +37,6 @@ const EditProfileScreen = () => {
 
 
 
-    // const stateData = useSelector((state: RootState) => state.registerData);
 
     // --------------------------------- max date validation
     const maxDate = new Date();

@@ -7,6 +7,11 @@ export type AuthNavigationProps = {
     registerPersonalData: NativeStackNavigationProp<AuthNavigationParams, "registerPersonalData">;
     registerUserData: NativeStackNavigationProp<AuthNavigationParams, "registerUserData">;
     registerPassword: NativeStackNavigationProp<AuthNavigationParams, "registerPassword">;
+    passwordRestoreForm: NativeStackNavigationProp<AuthNavigationParams, "passwordRestoreForm">;
+    passwordRestoreFormAfter2FA: NativeStackNavigationProp<AuthNavigationParams, "passwordRestoreFormAfter2FA">;
+    passwordRestoreCodeConfirmation: NativeStackNavigationProp<AuthNavigationParams, "passwordRestoreCodeConfirmation">;
+    passwordRestoreEmail: NativeStackNavigationProp<AuthNavigationParams, "passwordRestoreEmail">;
+
 };
 
 export type AuthNavigationParams = {
@@ -16,5 +21,9 @@ export type AuthNavigationParams = {
     registerPersonalData: undefined;
     registerUserData: undefined;
     registerPassword: undefined;
+    passwordRestoreForm: undefined;
+    passwordRestoreFormAfter2FA: { email: string } | undefined;
+    passwordRestoreCodeConfirmation: { email: string } | undefined;
+    passwordRestoreEmail: undefined;
 };
 

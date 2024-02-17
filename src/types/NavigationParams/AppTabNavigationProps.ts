@@ -8,6 +8,7 @@ export type AppTabNavigationProps = {
   feed: TabScreenNavigationProp;
   profile: TabScreenNavigationProp;
   messages: TabScreenNavigationProp;
+  newPostOptions: TabScreenNavigationProp;
   // Otros tipos de navegación...
 };
 
@@ -15,5 +16,6 @@ export type AppTabNavigationParams = {
   feed: undefined;
   profile: undefined; // Utilizando undefined para mantener consistencia
   messages: undefined;
+  newPostOptions: undefined;
 };
 

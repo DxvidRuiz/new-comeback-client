@@ -34,7 +34,6 @@ const EditProfileData = () => {
 
     const navigation = useNavigation<editProfileataProp>()
 
-    // const stateData = useSelector((state: RootState) => state.registerData);
     const initialValues = { name: '', lastname: '', dateOfBirth: "", gender: null }
 
     // --------------------------------- max date validation
