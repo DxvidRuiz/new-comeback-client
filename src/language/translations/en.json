@@ -11,7 +11,9 @@
         "camera": "Camera",
         "gallery": "Gallery",
         "resend": "Resend.",
-        "resend_in": "Resend in:"
+        "resend_in": "Resend in:",
+        "login": "Login",
+        "register": "Register"
     },
     "test": {
         "counting": "counting {{0}} of {{1}}"
@@ -31,14 +33,29 @@
         "update_password_subtitle": "Please update your password.",
         "verification_code": "Verification code",
         "enter_verification_code": "Please enter the verification code sent to your email.",
-        "no_code_received": "Didn't you receive the code?"
+        "no_code_received": "Didn't you receive the code?",
+        "don`t_have_account": "I don`t have an account",
+        "restore_password": "Restore password.",
+        "enter_associated_email": "Please enter the email associated with your account."
     },
     "message": {
         "password_change": "Successful password change.",
-        "change_email_message": "To complete this action a confirmation code will be sent to your current mail."
+        "change_email_message": "To complete this action a confirmation code will be sent to the associated mail.",
+        "verification_code_sent": "Verification code sent."
     },
     "error": {
         "password_update_error": "Error updating password.",
-        "current_password_incorrect": "Incorrect current password."
+        "current_password_incorrect": "Incorrect current password.",
+        "password_must_be_different": "The new password cannot be the same as the current password.",
+        "incorrect_expired_code": "Incorrect or expired verification code.",
+        "error_generating_code": "Error sending verification code.",
+        "network_error": "Network error.",
+        "user_not_found": "User not found.",
+        "account_associated_not_found": "Didn't find an account associated with the email entered.",
+        "error_searching_user": "Error when searching for user.",
+        "incorrect_password": "Incorrect password."
+    },
+    "action": {
+        "send": "Send"
     }
 }

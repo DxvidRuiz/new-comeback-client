@@ -11,7 +11,9 @@
         "camera": "Camara",
         "gallery": "Galeria",
         "resend": "Reenviar.",
-        "resend_in": "Reenviar en:"
+        "resend_in": "Reenviar en:",
+        "login": "Acceder",
+        "register": "Registrarme"
     },
     "test": {
         "counting": "contando {{0}} de {{1}}"
@@ -31,14 +33,29 @@
         "update_password_subtitle": "Por favor actualice su contraseña.",
         "verification_code": "Codigo de verificacion",
         "enter_verification_code": "Por favor ingresa el codigo de verificacion enviado a tu correo.",
-        "no_code_received": "No recibiste el codigo?"
+        "no_code_received": "No recibiste el codigo?",
+        "don`t_have_account": "No tengo cuenta.",
+        "restore_password": "Restaurar contraseña.",
+        "enter_associated_email": "Por favor ingresa el correo electronico asociado a tu cuenta."
     },
     "message": {
         "password_change": "Cambio de contraseña exitoso.",
-        "change_email_message": "Para completar esta accion se enviara un codigo de confirmacion a tu actual correo."
+        "change_email_message": "Para completar esta accion se enviara un codigo de confirmacion al correo asociado.",
+        "verification_code_sent": "Codigo de verificacion enviado."
     },
     "error": {
         "password_update_error": "Error al actualizar contraseña.",
-        "current_password_incorrect": "Contraseña actual incorrecta."
+        "current_password_incorrect": "Contraseña actual incorrecta.",
+        "password_must_be_different": "La nueva contraseña no puede ser igual a la actual.",
+        "incorrect_expired_code": "Codigo de verificacion incorrecto o expirado.",
+        "error_generating_code": "Error al enviar codigo de verificacion.",
+        "network_error": "Error de red.",
+        "user_not_found": "Usuario no encontrado.",
+        "account_associated_not_found": "No se encontro cuenta asociada a el correo ingresado.",
+        "error_searching_user": "Error al buscar usuario.",
+        "incorrect_password": "Contraseña incorrecta."
+    },
+    "action": {
+        "send": "Enviar"
     }
 }

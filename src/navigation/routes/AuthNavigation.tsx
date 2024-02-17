@@ -6,6 +6,10 @@ import RegisterPasswordStep from "../../screens/authenticationScreens/RegisterPa
 import RegisterPersonalData from "../../screens/authenticationScreens/RegisterPersonalData";
 import RegisterUserData from "../../screens/authenticationScreens/RegisterUserData";
 import Welcome from "../../screens/authenticationScreens/Welcome";
+import PasswordRestoreCodeConfirmation from "../../screens/authenticationScreens/passwordRestore/PasswodRestoreCodeConfirmation";
+import PasswordRestoreEmail from "../../screens/authenticationScreens/passwordRestore/PasswordRestoreEmail";
+import PasswordRestoreForm from "../../screens/authenticationScreens/passwordRestore/PasswordRestoreForm ";
+import PasswordRestoreFormAfter2FA from "../../screens/authenticationScreens/passwordRestore/PasswordRestoreFormAfter2FA";
 import { AuthNavigationProps } from "../../types/NavigationParams/AuthNavigationParams";
 
 const Stack = createNativeStackNavigator<AuthNavigationProps>()
@@ -31,6 +35,19 @@ const AuthNavigation = () => {
             }} />
             <Stack.Screen name='registerPassword' component={RegisterPasswordStep} options={{
                 headerShown: true, headerBackButtonMenuEnabled: true, headerBackVisible: true, headerTransparent: true, headerTintColor: theme.colors.onPrimary, headerTitle: ""
+            }} />
+            <Stack.Screen name='passwordRestoreForm' component={PasswordRestoreForm} options={{
+                headerShown: true, headerBackButtonMenuEnabled: true, headerBackVisible: true, headerTransparent: true, headerTintColor: theme.colors.onPrimary, headerTitle: ""
+            }} />
+            <Stack.Screen name='passwordRestoreCodeConfirmation' component={PasswordRestoreCodeConfirmation} options={{
+                headerShown: true, headerBackButtonMenuEnabled: true, headerBackVisible: true, headerTransparent: true, headerTintColor: theme.colors.onPrimary, headerTitle: ""
+            }} />
+
+            <Stack.Screen name='passwordRestoreEmail' component={PasswordRestoreEmail} options={{
+                headerShown: true, headerBackButtonMenuEnabled: true, headerBackVisible: true, headerTransparent: true, headerTintColor: theme.colors.onPrimary, headerTitle: "", headerShadowVisible: false
+            }} />
+            <Stack.Screen name='passwordRestoreFormAfter2FA' component={PasswordRestoreFormAfter2FA} options={{
+                headerShown: true, headerBackButtonMenuEnabled: true, headerBackVisible: true, headerTransparent: true, headerTintColor: theme.colors.onPrimary, headerTitle: "", headerShadowVisible: false
             }} />
         </Stack.Navigator>
     )
