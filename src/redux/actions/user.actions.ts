@@ -41,15 +41,33 @@ export const checkUsername = createAsyncThunk(
     }
   }
 );
-
 export const checkEmail = createAsyncThunk(
-  "checkEmail/call",
+  "checkUsername/call",
   async (data: any, { rejectWithValue }: any) => {
     try {
       const response = await Api.post(API_ENDPOINTS.CHECK_EMAIL, data);
       return response; // Este será el payload de la acción fulfilled
     } catch (error) {
+
+
+      console.log("error desde el thunk", error);
+
       return rejectWithValue(error.message); // Este será el payload de la acción rejected
+    }
+  }
+);
+
+export const findUserByEmail = createAsyncThunk(
+  "findUserByEmail/call",
+  async (data: any, { rejectWithValue }: any) => {
+    try {
+      const response = await Api.post(API_ENDPOINTS.FIND_USER_BY_EMAIL, data);
+      return response; // Este será el payload de la acción fulfilled
+    } catch (error) {
+      // Extraer el código de error si está disponible
+      const errorCode = error.response ? error.response.status : undefined;
+      // Retornar un objeto con el mensaje de error y el código de error
+      return rejectWithValue({ message: error.message, errorCode });// Este será el payload de la acción rejected
     }
   }
 );
@@ -59,7 +77,6 @@ export const uploadProfilePhoto = createAsyncThunk(
   async (data: any, { rejectWithValue }) => {
 
     try {
-      console.log(data, 'data send');
 
       const response = await Api.post(API_ENDPOINTS.UPLOAD_PROFILE_PHOTO, data);
 
