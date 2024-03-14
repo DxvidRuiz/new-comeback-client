@@ -17,5 +17,31 @@ export const getProfilePosts = createAsyncThunk(
   }
 );
 
+export const newPost = createAsyncThunk(
+  "newPost/call",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const response = await Api.post(API_ENDPOINTS.NEW_POST, data);
+      return response.data; // Asegúrate de devolver la parte relevante de la respuesta
+    } catch (error) {
+      let errorMessage = "Unknown error occurred";
+      let errorCode = 500; // Un código de error predeterminado si no se puede obtener de la respuesta
 
+      if (error.response) {
+        // Si la respuesta del error está disponible, usa esos detalles
+        errorMessage = error.response.data?.message || error.message;
+        errorCode = error.response.status;
+      } else if (error.request) {
+        // El error fue hecho pero no hubo respuesta
+        errorMessage = "No response received";
+      } else {
+        // Algo sucedió en la configuración de la solicitud que desencadenó un Error
+        errorMessage = error.message;
+      }
+
+      // Utiliza rejectWithValue para rechazar explícitamente con un valor específico
+      return rejectWithValue({ message: errorMessage, errorCode });
+    }
+  }
+);
 

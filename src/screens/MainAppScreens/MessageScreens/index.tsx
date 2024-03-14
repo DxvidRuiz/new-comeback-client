@@ -1,1 +1,2 @@
-export { default } from "./newPostOptionsScreen";
+export { default } from "../postScreens/newPostOptionsScreen";
+

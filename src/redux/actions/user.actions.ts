@@ -74,7 +74,7 @@ export const findUserByEmail = createAsyncThunk(
 
 export const uploadProfilePhoto = createAsyncThunk(
   "uploadProfilePhoto/call",
-  async (data: any, { rejectWithValue }) => {
+  async (data: any, { rejectWithValue }: any) => {
 
     try {
 
