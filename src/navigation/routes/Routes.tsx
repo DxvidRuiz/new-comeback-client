@@ -18,19 +18,16 @@ const Routes = () => {
     const toggleDarkMode = () => { setIsDarkMode(!isDarkMode) };
     console.log(authenticated, 'in routes');
 
-    return (
-        <NavigationContainer>
-            <PaperProvider theme={isDarkMode ? darkTheme : lightTheme} >
-                <Stack.Navigator initialRouteName='AuthProps' >
 
-                    {
-                        authenticated
-                            ?
-                            <Stack.Screen name='MainTabProps' component={MainNavigation} options={{ headerShown: false }} />
-                            :
-                            <Stack.Screen name='AuthProps' component={AuthNavigation} options={{ headerShown: false, headerBackButtonMenuEnabled: true, }} />
-                    }
-                </Stack.Navigator>
+    return (
+
+        <NavigationContainer >
+            <PaperProvider theme={isDarkMode ? darkTheme : lightTheme} >
+                {authenticated ? (
+                    <MainNavigation />
+                ) : (
+                    <AuthNavigation />
+                )}
             </PaperProvider>
         </NavigationContainer>
     )

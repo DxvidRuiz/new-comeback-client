@@ -16,10 +16,11 @@ const Stack = createNativeStackNavigator<AuthNavigationProps>()
 
 const AuthNavigation = () => {
     const theme = useTheme();
+    const darktheme = true
 
     return (
 
-        <Stack.Navigator initialRouteName="registerMethod" screenOptions={{ animation: "slide_from_right" }}>
+        <Stack.Navigator initialRouteName="registerMethod" screenOptions={{ animation: "slide_from_right", statusBarColor: theme.colors.onSecondary, statusBarStyle: darktheme ? "light" : "dark" }}>
             <Stack.Screen name='welcome' component={Welcome} options={{ headerShown: false, headerBackButtonMenuEnabled: true, }} />
             <Stack.Screen name='registerMethod' component={RegisterMethod} options={{
                 headerShown: true, headerBackButtonMenuEnabled: true, headerBackVisible: true, headerTransparent: true, headerTintColor: theme.colors.onPrimary, headerTitle: ""
