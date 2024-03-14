@@ -17,5 +17,6 @@ export const API_ENDPOINTS = {
   PASSWORD_UPDATE_CODE_VALIDATION: "auth-actions/password-update-code-validation",
   PASSWORD_RESTORE_CODE_VALIDATION: "auth-actions/password-restore-code-validation",
   GET_PROFILE_POSTS: "posts/get-posts",
+  NEW_POST: "posts/create_post",
   // Agrega aquí otras rutas que necesites
 };

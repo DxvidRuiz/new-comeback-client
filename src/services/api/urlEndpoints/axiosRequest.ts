@@ -109,7 +109,7 @@ export class Api {
       const response = await axiosInstance.post(`${path}`, data, {
         headers: {
           Authorization: `Bearer ${token ? token : ""}`,
-          'Content-Type': 'multipart/form-data'
+          // 'Content-Type': 'multipart/form-data'
         }
       });
       // Retornar un objeto que incluya el mensaje de éxito y el código de estado
