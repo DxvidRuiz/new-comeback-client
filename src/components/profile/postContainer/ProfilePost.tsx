@@ -20,22 +20,15 @@ const ProfilePost: React.FC<any> = ({ post, index }) => {
     const theme = useTheme();
     const styles = style(theme);
 
+    const postMediaData = post.media?.length > 0 ? post.media[0] : null;
+    const postData = post;
 
-    const postMediaData = post.media
-    const postData = post
-    const postMediaUrl = postMediaData[0].url;
-    const postMediaType = postMediaData[0].type;
-    const mediaHeight = postMediaData[0].height;
-    const mediaWidth = postMediaData[0].width;
-    const videoDuration: number = parseInt(postMediaData[0].duration) * 1000;
-
-
-    console.log(videoDuration);
-
-
-    // console.log("print del post dentro de componente  ", post._doc.media);
-    console.log("print del post dentro de componente  ", postMediaType);
-
+    // Asumimos valores predeterminados o nulos para manejar posts sin media
+    const postMediaUrl = postMediaData ? postMediaData.url : null;
+    const postMediaType = postMediaData ? postMediaData.type : null;
+    const mediaHeight = postMediaData ? postMediaData.height : 1; // Evita división por cero
+    const mediaWidth = postMediaData ? postMediaData.width : 1; // Mismo motivo
+    const videoDuration = postMediaData ? parseInt(postMediaData.duration) * 1000 : 0;
 
     return (
         <View style={styles.container}>
