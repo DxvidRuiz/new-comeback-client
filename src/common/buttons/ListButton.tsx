@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle, ImageSourcePropType } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
 
 interface ListButtonProps {
@@ -34,7 +34,7 @@ const styleSheet = (theme: MD3Theme) => StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 5,
         borderRadius: 5,
-        
+
     },
     icono: {
         justifyContent: 'flex-end',

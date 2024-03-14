@@ -2,8 +2,8 @@ import { AntDesign, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'react-native-paper';
 import FeedScreen from '../../screens/MainAppScreens/HomeScreens/FeedScreen';
-import NewPostOptionsScreen, { default as MessagesScreen } from '../../screens/MainAppScreens/MessageScreens/newPostOptionsScreen';
 import ProfileScreen from '../../screens/MainAppScreens/ProfileScreens/ProfileScreen';
+import NewPostOptionsScreen, { default as MessagesScreen } from '../../screens/MainAppScreens/postScreens/newPostOptionsScreen';
 import { AppTabNavigationProps } from '../../types/NavigationParams/AppTabNavigationProps';
 export const TabNavigation = () => {
     const Tab = createBottomTabNavigator<AppTabNavigationProps>();
@@ -22,11 +22,27 @@ export const TabNavigation = () => {
         >
             <Tab.Screen name="feed" component={FeedScreen} options={{ tabBarIcon: ({ focused }) => (<Octicons name="home" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }} />
 
-            <Tab.Screen name="newPostOptions" component={NewPostOptionsScreen} options={{
-                headerShown: false, headerTransparent: false, tabBarIcon: ({ focused }) => (
+            <Tab.Screen name="newPostOptionsScreen" component={NewPostOptionsScreen} options={{
+
+                headerStyle: {
+
+                    backgroundColor: theme.colors.onSecondary, // Aquí estableces el color de fondo del encabezado
+                },
+                headerShown: false, headerTransparent: true, tabBarIcon: ({ focused }) => (
 
                     <AntDesign name="pluscircle" size={focused ? 30 : 26} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />)
             }} />
+            {/* <Tab.Screen name="newPostNavigation" component={NewPostNavigation} options={{
+
+                headerStyle: {
+
+                    backgroundColor: theme.colors.onSecondary, // Aquí estableces el color de fondo del encabezado
+                },
+                headerShown: false, headerTransparent: true, tabBarIcon: ({ focused }) => (
+
+                    <AntDesign name="pluscircle" size={focused ? 30 : 26} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />)
+            }} /> */}
+
 
             <Tab.Screen name="messages" component={MessagesScreen} options={{ tabBarIcon: ({ focused }) => (<MaterialCommunityIcons name="message-reply-outline" size={focused ? 25 : 22} color={focused ? theme.colors.secondary : theme.colors.onPrimary} />) }} />
 

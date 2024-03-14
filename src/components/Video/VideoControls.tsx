@@ -3,6 +3,23 @@ import { Slider } from "@miblanchard/react-native-slider";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+
+type VideoControlsProps = {
+    onTogglePlayPause: () => void;
+    onToggleMute: () => void;
+    onTogglePlaybackSpeed: () => void;
+    onSeek: (value: number) => void;
+    onToggleFullscreen: () => Promise<void>;
+    duration: number;
+    currentTime: number;
+    rate: number;
+    isMuted: boolean;
+    isPlaying: boolean; // Asegúrate de que esta línea esté presente
+    isFullscreen: boolean;
+    ThumbnailImageUrl?: string; // Suponiendo que también quieras pasar una URL de imagen de miniatura
+};
+
+
 const VideoControls = ({
     onTogglePlayPause,
     onToggleMute,
@@ -68,7 +85,8 @@ const VideoControls = ({
                         }}
                         minimumTrackTintColor="#FFF"
                         maximumTrackTintColor="rgba(255, 255, 255, 0.5)"
-                        thumbTintColor="transparent"
+                        thumbTintColor="#FFF"
+                        thumbStyle={{ height: 10, width: 10 }}
 
 
 
@@ -83,7 +101,7 @@ const VideoControls = ({
                             style={styles.controlButton}
                         >
                             <MaterialCommunityIcons
-                                name={isMuted ? "volume-variant-off" : "volume-low"}
+                                name={isMuted ? "volume-mute" : "volume-high"}
                                 size={24}
                                 color="white"
                             />
@@ -121,8 +139,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         // backgroundColor: "green",
-        padding: 10,
-        borderRadius: 30
+        padding: 25,
+        borderRadius: 50
 
 
     },

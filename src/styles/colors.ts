@@ -21,6 +21,7 @@ export const COLORS = {
     black: 'rgba(0, 0, 0, 1)',
     gray: 'rgba(128, 128, 128, 1)',
     gray05: 'rgba(128, 128, 128, 0.5)',
+    gray08: 'rgba(128, 128, 128, 0.8)',
     gray03: 'rgba(128, 128, 128, 0.3)',
     gray01: 'rgba(128, 128, 128, 0.1)',
     gray02: 'rgba(128, 128, 128, 0.2)',

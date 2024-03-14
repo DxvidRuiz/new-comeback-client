@@ -13,7 +13,9 @@
         "resend": "Reenviar.",
         "resend_in": "Reenviar en:",
         "login": "Acceder",
-        "register": "Registrarme"
+        "register": "Registrarme",
+        "continue": "Continuar",
+        "post": "Publicar"
     },
     "test": {
         "counting": "contando {{0}} de {{1}}"
@@ -36,7 +38,23 @@
         "no_code_received": "No recibiste el codigo?",
         "don`t_have_account": "No tengo cuenta.",
         "restore_password": "Restaurar contraseña.",
-        "enter_associated_email": "Por favor ingresa el correo electronico asociado a tu cuenta."
+        "enter_associated_email": "Por favor ingresa el correo electronico asociado a tu cuenta.",
+        "no_images_selected": "No hay imágenes seleccionadas",
+        "select_images": "Seleccionar imagenes",
+        "create_new_post": "Crear nueva publicacion",
+        "new_post": "Nueva publicacion",
+        "videos": "Videos",
+        "images": "imagenes",
+        "video": "Video",
+        "image": "Imagen",
+        "add_comment": "Agrega un comentario",
+        "add_description": "Agrega una descripcion",
+        "description": "Descripcion",
+        "search_place": "Buscar lugar",
+        "location": "Ubicacion",
+        "add_location": "Agregar ubicacion",
+        "done": "¡Hecho!",
+        "your_post_has_been_shared": "Tu publicación se ha compartido."
     },
     "message": {
         "password_change": "Cambio de contraseña exitoso.",
@@ -56,6 +74,15 @@
         "incorrect_password": "Contraseña incorrecta."
     },
     "action": {
-        "send": "Enviar"
+        "send": "Enviar",
+        "post_type": "Selecciona tipo de publicacion",
+        "next": "Siguiente"
+    },
+    "option": {
+        "new_post": "Nuevo post"
+    },
+    "alert": {
+        "ups_something_went_wrong": "\"¡Ups! Algo salió mal",
+        "your_post_could_not_be_shared": "Tu publicación no se pudo compartir. Revisa tu conexión y prueba de nuevo."
     }
 }

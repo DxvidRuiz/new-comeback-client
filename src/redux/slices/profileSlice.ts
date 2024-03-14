@@ -1,12 +1,14 @@
 // features/authSlice.ts
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { getProfilePosts } from "../actions/profile.actions";
+import { getProfilePosts, newPost } from "../actions/profile.actions";
 
 // Initial state for the slice
 const initialState = {
     loading: false,
     error: null,
     profilePosts: [],
+    loadingNewPost: false,
+    newPost: {},
     otpCodeCountdown: false,
     otpCodetimeRemaining: 0,
 };
@@ -41,6 +43,20 @@ export const profileSlice = createSlice({
             })
             .addCase(getProfilePosts.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.error.message || "Something went wrong";
+            });
+        builder
+            .addCase(newPost.pending, (state) => {
+                state.loadingNewPost = true;
+                state.error = null;
+            })
+            .addCase(newPost.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loadingNewPost = false;
+                state.error = null;
+                // state.profilePosts = action.payload
+            })
+            .addCase(newPost.rejected, (state, action) => {
+                state.loadingNewPost = false;
                 state.error = action.error.message || "Something went wrong";
             });
 

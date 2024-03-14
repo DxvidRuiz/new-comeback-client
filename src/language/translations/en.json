@@ -13,7 +13,9 @@
         "resend": "Resend.",
         "resend_in": "Resend in:",
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "continue": "Continue",
+        "post": "Post"
     },
     "test": {
         "counting": "counting {{0}} of {{1}}"
@@ -36,7 +38,23 @@
         "no_code_received": "Didn't you receive the code?",
         "don`t_have_account": "I don`t have an account",
         "restore_password": "Restore password.",
-        "enter_associated_email": "Please enter the email associated with your account."
+        "enter_associated_email": "Please enter the email associated with your account.",
+        "no_images_selected": "No images selected",
+        "select_images": "Select images",
+        "create_new_post": "Create new publication",
+        "new_post": "New post.",
+        "videos": "Videos",
+        "images": "images",
+        "video": "Video",
+        "image": "Image",
+        "add_comment": "Add a comment",
+        "add_description": "Add description",
+        "description": "Description",
+        "search_place": "Search place",
+        "location": "Location",
+        "add_location": "Add location",
+        "done": "Done!",
+        "your_post_has_been_shared": "Your post has been shared."
     },
     "message": {
         "password_change": "Successful password change.",
@@ -56,6 +74,15 @@
         "incorrect_password": "Incorrect password."
     },
     "action": {
-        "send": "Send"
+        "send": "Send",
+        "post_type": "Select post type",
+        "next": "Next"
+    },
+    "option": {
+        "new_post": "New post"
+    },
+    "alert": {
+        "ups_something_went_wrong": "\"Ups! Something went wrong",
+        "your_post_could_not_be_shared": "Your post couldn't be shared. Check your connection and try again."
     }
 }

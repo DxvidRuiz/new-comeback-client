@@ -50,20 +50,6 @@ const ProfileScreen = () => {
     };
 
 
-    // console.log("print del estado de redux ", profilePosts);
-    // console.log("print del estado user de redux ", user);
-
-    const imageUrl = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTUlyTFN60JmTruT2Y-ZKIoD_2M6bUPX3N6G1ROcALY-pyI-Ifw"
-    const imageUrl2 = "https://imageio.forbes.com/specials-images/imageserve/63e20966ef945c9ad198690a/FC-Barcelona-are-now-top-of-La-Liga-after-a-strong-comeback-/960x0.jpg?format=jpg&width=960"
-
-    const videoUrl = "https://storage.googleapis.com/iimmabe-test.appspot.com/post-videos/f06c6cfe-d023-4f06-a56f-450df7a9e099-d1888e57-e42a-44c1-a176-ed36a471d47c-video.mp4"
-
-    // const datos = [
-    //     { id: '1', nombre: 'Dua lipa', postType: "image", url: imageUrl },
-    //     { id: '2', nombre: 'Dua lipa concert', postType: "video", url: videoUrl },
-    //     { id: '3', nombre: 'Dua lipa profile', postType: "image", url: imageUrl2 },
-    //     { id: '4', nombre: 'Dua lipa', postType: "video", url: videoUrl },
-    // ];
 
     const datos = profilePosts;
 
@@ -119,7 +105,12 @@ const ProfileScreen = () => {
 
     useEffect(() => {
         handleGetProfilePosts();
+        console.log("get post");
+
     }, []);
+
+
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -154,7 +145,7 @@ const ProfileScreen = () => {
             <FlatList
                 data={profilePosts}
                 renderItem={({ item, index }) => <ProfilePost post={item} index={index} />}
-                keyExtractor={(item) => item._id}
+                keyExtractor={(item) => item?._id}
                 showsVerticalScrollIndicator={false}
             />
 

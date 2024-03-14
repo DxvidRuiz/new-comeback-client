@@ -2,12 +2,14 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type MainParams = {
     profileNavigation: undefined;
-    home: undefined;
+    mainTabNavigation: undefined;
+    newPostNavigation: undefined
 };
 
 export type MainNavigationProps = {
-    home: NativeStackNavigationProp<MainParams, "home">;
+    mainTabNavigation: NativeStackNavigationProp<MainParams, "mainTabNavigation">;
     profileNavigation: NativeStackNavigationProp<MainParams, "profileNavigation">;
+    newPostNavigation: NativeStackNavigationProp<MainParams, "newPostNavigation">;
 };
 
 
