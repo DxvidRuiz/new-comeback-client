@@ -35,7 +35,7 @@ const ActionConfirmationModal: React.FC<actionChangeConfirmationModalProps> = ({
             {message}
           </Text>
           <View style={styles.buttonContainer}>
-            <CustomButton label={t('actions.cancel')} color={"tertiary"} textColor={"#000000"} onPress={onCancel} type="elevated" />
+            <CustomButton label={t('actions.cancel')} color={"primary"} textColor={"#000000"} onPress={onCancel} type="elevated" />
             <CustomButton label={t('actions.confirm')} onPress={onConfirm} type="elevated" />
           </View>
         </View>

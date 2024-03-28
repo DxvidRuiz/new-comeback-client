@@ -25,11 +25,11 @@ export const alarmsuccess = ({
     style: {
       alignItems: "center", borderWidth: 4,
       borderLeftColor: COLORS.primary,
-      borderBottomColor: COLORS.surface,
-      borderTopColor: COLORS.surface,
-      borderRightColor: COLORS.surface,
+      borderBottomColor: COLORS.black,
+      borderTopColor: COLORS.black,
+      borderRightColor: COLORS.black,
     },
-    backgroundColor: COLORS.surface
+    backgroundColor: COLORS.black
 
   });
 
@@ -66,11 +66,11 @@ export const alarmWarning = ({
     color: COLORS.white,
     style: {
       alignItems: "center", borderWidth: 4, borderLeftColor: COLORS.error05,
-      borderBottomColor: COLORS.surface,
-      borderTopColor: COLORS.surface,
-      borderRightColor: COLORS.surface,
+      borderBottomColor: COLORS.black,
+      borderTopColor: COLORS.black,
+      borderRightColor: COLORS.black,
     },
-    backgroundColor: COLORS.surface
+    backgroundColor: COLORS.black
 
   });
 
@@ -102,11 +102,11 @@ export const alarmError = ({
     color: COLORS.white,
     style: {
       alignItems: "center", borderWidth: 4, borderLeftColor: COLORS.error05,
-      borderBottomColor: COLORS.surface,
-      borderTopColor: COLORS.surface,
-      borderRightColor: COLORS.surface,
+      borderBottomColor: COLORS.black,
+      borderTopColor: COLORS.black,
+      borderRightColor: COLORS.black,
     },
-    backgroundColor: COLORS.surface
+    backgroundColor: COLORS.black
 
   });
 
@@ -137,11 +137,11 @@ export const alarmInfo = ({
     ,
     style: {
       alignItems: "center", borderWidth: 4, borderLeftColor: COLORS.surface,
-      borderBottomColor: COLORS.surface,
-      borderTopColor: COLORS.surface,
-      borderRightColor: COLORS.surface,
+      borderBottomColor: COLORS.black,
+      borderTopColor: COLORS.black,
+      borderRightColor: COLORS.black,
     },
-    backgroundColor: COLORS.surface
+    backgroundColor: COLORS.black
 
   });
 
