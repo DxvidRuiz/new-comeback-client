@@ -1,9 +1,12 @@
 // PostCard.js
-import { EvilIcons } from '@expo/vector-icons';
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { AntDesign, Feather } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
+import ImageCarouselComponent from '../../Media/ImageCarouselComponent';
+import ModalReutilizable from '../../Modals/CustomModal';
 import VideoPlayer from '../../Video/VideoPlayer';
+import PostSettings from './PostSettings';
 import PostIcon from './icons/PostIcon';
 
 interface post_i {
@@ -30,7 +33,31 @@ const ProfilePost: React.FC<any> = ({ post, index }) => {
     const mediaWidth = postMediaData ? postMediaData.width : 1; // Mismo motivo
     const videoDuration = postMediaData ? parseInt(postMediaData.duration) * 1000 : 0;
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+
+
+    const postId = post?._id
+
+    const maxHeight = post.media ? post.media.reduce((max, item) => Math.max(max, item.height), 0) : 0;
+    const maxWidth = post.media ? post.media.reduce((max, item) => Math.max(max, item.width), 0) : 0;
+
+    const aspectRatio = maxHeight > 0 ? maxWidth / maxHeight : 1; // Evita la división por cero
+
+
+
+    const handleOpenModal = () => {
+        setModalVisible(true);
+    };
+
+    // Función que se llama cuando el modal se cierra
+    const handleCloseModal = () => {
+        setModalVisible(false);
+    };
+
+
     return (
+
         <View style={styles.container}>
             {/* Header section */}
             <View style={styles.header}>
@@ -38,31 +65,43 @@ const ProfilePost: React.FC<any> = ({ post, index }) => {
             </View>
 
 
+            {postMediaType === "image" &&
+                <View style={[styles.media, { aspectRatio: postMediaType === "image" ? aspectRatio : mediaWidth / mediaHeight }]}  >
+                    < ImageCarouselComponent imageUrls={post.media} />
+                </View>
+            }
 
+            {postMediaType === "video" && <View style={[styles.media, { aspectRatio: mediaWidth / mediaHeight }
 
-            <View style={[styles.media, { aspectRatio: mediaWidth / mediaHeight }]}  >
-                {postMediaType === "image" && <Image style={{ flex: 1 }} source={{ uri: postMediaUrl }} />}
-
-                {postMediaType === "video" && <VideoPlayer videoTotalDuration={videoDuration} videoUrl={postMediaUrl} />}
+            ]}  >
+                <VideoPlayer videoTotalDuration={videoDuration} videoUrl={postMediaUrl} />
             </View>
-
-
+            }
 
             <View style={styles.messageContainer}>
                 <Text>
-                    {postData.message}
+                    {postData?.message}
                 </Text>
             </View>
 
             <View style={styles.details}>
                 <View style={styles.buttonsContainer}>
-                    <PostIcon number={43} iconName={<EvilIcons name="heart" size={28} color={theme.colors.onPrimary} />} />
-                    <PostIcon number={44} iconName={<EvilIcons name="comment" size={24} color={theme.colors.onPrimary} />} />
-                    <PostIcon iconName={<EvilIcons name="refresh" size={24} color={theme.colors.onPrimary} />} />
-                    <PostIcon iconName={<EvilIcons name="share-google" size={24} color={theme.colors.onPrimary} />} />
+                    <PostIcon number={43} iconName={<AntDesign name="hearto" size={20} color={theme.colors.onPrimary} />} />
+                    <PostIcon iconName={<AntDesign name="message1" size={20} color={theme.colors.onPrimary} />} />
+                    <PostIcon iconName={<AntDesign name="sync" size={20} color={theme.colors.onPrimary} />} />
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <PostIcon iconName={<Feather name="more-vertical" size={24} color={theme.colors.onPrimary} />} />
+                    </TouchableOpacity>
                 </View>
             </View>
+            <ModalReutilizable
+                visible={modalVisible}
+                contenido={<View>
+                    <PostSettings onPostDeleteSuccess={() => setModalVisible(false)} postId={postId} />
+                </View>}
+                onClose={handleCloseModal} />
         </View>
+
     );
 };
 
@@ -123,6 +162,11 @@ const style = (theme: MD3Theme) => StyleSheet.create({
     },
     buttonText: {
         fontSize: 14,
+    },
+    contentContainer: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: "red"
     },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
 

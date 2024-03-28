@@ -44,4 +44,31 @@ export const newPost = createAsyncThunk(
     }
   }
 );
+export const deletePost = createAsyncThunk(
+  "deletePost/call",
+  async (id: any, { rejectWithValue }) => {
+    try {
+      const response = await Api.delete(API_ENDPOINTS.DELETE_POST, id);
+      return response; // Asegúrate de devolver la parte relevante de la respuesta
+    } catch (error) {
+      let errorMessage = "Unknown error occurred";
+      let errorCode = 500; // Un código de error predeterminado si no se puede obtener de la respuesta
+
+      if (error.response) {
+        // Si la respuesta del error está disponible, usa esos detalles
+        errorMessage = error.response.data?.message || error.message;
+        errorCode = error.response.status;
+      } else if (error.request) {
+        // El error fue hecho pero no hubo respuesta
+        errorMessage = "No response received";
+      } else {
+        // Algo sucedió en la configuración de la solicitud que desencadenó un Error
+        errorMessage = error.message;
+      }
+
+      // Utiliza rejectWithValue para rechazar explícitamente con un valor específico
+      return rejectWithValue({ message: errorMessage, errorCode });
+    }
+  }
+);
 

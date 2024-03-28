@@ -145,7 +145,90 @@ export class Api {
     }
   }
 
+
+
+
+  static delete = async (path: string, id: string) => {
+    try {
+      const token = await getAsyncStorage<string>(AsyncStorageKeys.AUTH_TOKEN, "string", EncryptKeys.AUTH_ENCRYPT_KEY);
+
+      // Asume que `path` ya incluye el prefijo necesario, como `/usuarios/`
+      // y simplemente añade el `id` al final para especificar el recurso a borrar.
+      const fullPath = `${path}${id}`;
+
+      const response = await axiosInstance.delete(fullPath, {
+        headers: {
+          Authorization: `Bearer ${token ? token : ""}`,
+        }
+      });
+
+      // Retornar los datos de la respuesta directamente
+      return response.data;
+    } catch (error) {
+      let errorMessage = "An unexpected error occurred";
+      let errorCode: string | number | undefined = undefined;
+
+      if (error.response) {
+        // El servidor respondió con un estado de error
+        errorMessage = error.response.data?.error || JSON.stringify(error.response.data);
+        errorMessage = `Server Error: ${error.response.status} - ${errorMessage}`;
+        errorCode = error.response.status;
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió respuesta
+        errorMessage = "No response received from the server";
+      } else if (error.code === 'ECONNABORTED') {
+        // Manejar timeout específicamente
+        errorMessage = `Request timeout after ${TIMEOUT / 1000} seconds`;
+      } else if (error.message.includes('Network Error')) {
+        // Error de red (por ejemplo, sin conexión a Internet)
+        errorMessage = 'Network Error: Please check your internet connection';
+      } else {
+        // Otros errores en la configuración de la solicitud
+        errorMessage = `Request Configuration Error: ${error.message}`;
+      }
+
+      // Retornar un objeto que incluya el mensaje de error y el código de error
+      throw { message: errorMessage, errorCode };
+    }
+  }
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
