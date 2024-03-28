@@ -1,5 +1,5 @@
 // EditProfileScreen
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -109,7 +109,12 @@ const ProfileScreen = () => {
 
     }, []);
 
-
+    useFocusEffect(
+        React.useCallback(() => {
+            handleGetProfilePosts();
+            console.log("get post on focus");
+        }, [])
+    );
 
 
     return (

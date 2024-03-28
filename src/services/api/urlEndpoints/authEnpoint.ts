@@ -18,5 +18,6 @@ export const API_ENDPOINTS = {
   PASSWORD_RESTORE_CODE_VALIDATION: "auth-actions/password-restore-code-validation",
   GET_PROFILE_POSTS: "posts/get-posts",
   NEW_POST: "posts/create_post",
+  DELETE_POST: "posts/",
   // Agrega aquí otras rutas que necesites
 };

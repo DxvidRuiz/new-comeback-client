@@ -1,7 +1,7 @@
 import { Feather, FontAwesome, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
@@ -9,7 +9,6 @@ import {
     KeyboardAvoidingView,
     Modal, Platform, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -27,11 +26,11 @@ import { COLORS } from '../../../styles/colors';
 import { alarmError, alarmsuccess } from '../../../common/Alerts/showMessage';
 import { newPost } from '../../../redux/actions/profile.actions';
 import { AppTabNavigationParams } from '../../../types/NavigationParams/AppTabNavigationProps';
-import { NewPostNavigationProps } from '../../../types/NavigationParams/newPostParams';
+import { NewPostParams } from '../../../types/NavigationParams/newPostParams';
 import SwipeGestureHandler from '../../../utils/SwipeGestureHandler';
 import { createFormData } from '../../../utils/createFormData';
 type NewPostProps = NativeStackNavigationProp<AppTabNavigationParams, 'feed'>;
-type routes = RouteProp<NewPostNavigationProps, 'sendNewPost'>;
+type routeProps = RouteProp<NewPostParams, 'newPost'>;
 
 
 export default function NewPost() {
@@ -41,6 +40,7 @@ export default function NewPost() {
     const [currentMediaItem, setCurrentMediaItem] = useState(null);
     const [imageGridModalVisible, setImageGridModalVisible] = useState(false);
     const [videoGridModalVisible, setVideoGridModalVisible] = useState(false);
+    const [selectedMedia, setSelectedMedia] = useState([]);
     // const [isSelectModalVisible, setSelectModalVisible] = useState(false);
     const localImages = useLocalImages();
     const localVideos = useLocalVideos();
@@ -51,14 +51,13 @@ export default function NewPost() {
     const styles = style(theme);
     const { t } = useTranslation();
 
-
-
-
     const [media, setMedia] = useState(localImages);
 
     const [textValue, setTextValue] = useState('');
 
     const navigation = useNavigation<NewPostProps>()
+    const route = useRoute<routeProps>();
+    const mediaCaptured = route.params?.mediaCaptured; // mediaCaptured puede ser undefined
 
     const handlePress = (item) => {
 
@@ -67,7 +66,6 @@ export default function NewPost() {
         setCurrentMediaItem(item);
         setMediaModalVisible(true);
     };
-
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState(null);
@@ -79,6 +77,29 @@ export default function NewPost() {
         // Aquí puedes hacer más lógica si es necesario, como enviar la ubicación a una API o almacenarla en un estado global
     };
 
+
+
+
+    useEffect(() => {
+        if (mediaCaptured) {
+            const newMedia = {
+                uri: mediaCaptured.uri,
+                mediaType: mediaCaptured.mediaType,
+                mediaCapturedRatio: mediaCaptured.ratio
+            };
+
+            console.log("media definiiva para form", newMedia);
+
+            if (mediaCaptured.mediaType === "photo") {
+                setSelectedImages([newMedia, ...selectedImages]);
+            }
+
+            if (mediaCaptured.mediaType === "video") {
+                setSelectedVideos([newMedia, ...selectedVideos]);
+            }
+            setSelectedMedia([newMedia, ...selectedMedia]);
+        }
+    }, [mediaCaptured]);
 
     const selectImage = (item) => {
         // Busca el índice del item basado en su propiedad única 'uri'
@@ -105,7 +126,6 @@ export default function NewPost() {
 
     };
 
-    console.log(selectedVideos);
 
     const handleTextChange = (text) => {
         setTextValue(text);
@@ -122,6 +142,10 @@ export default function NewPost() {
 
             // Combine selectedVideos and selectedImages into a single array
             const mediaItems = [...selectedVideos, ...selectedImages];
+
+
+            console.log("mediaItems", mediaItems);
+
 
             // Check if there are elements to send
             if (mediaItems.length > 0) {
@@ -223,12 +247,19 @@ export default function NewPost() {
                             <View
                                 key={index}
                                 style={[
-                                    styles.selectedVideoContent,
-                                    {
-                                        aspectRatio: selectedVideo?.width / selectedVideo?.height,
-                                        height: selectedVideo?.height > selectedVideo?.width ? '100%' : undefined,
-                                        width: selectedVideo?.width > selectedVideo?.height ? '100%' : undefined,
-                                    },
+                                    styles.selectedVideoContent, selectedVideo.width ?
+                                        {
+                                            aspectRatio: selectedVideo?.width / selectedVideo?.height,
+                                            height: selectedVideo?.height >= selectedVideo?.width ? '100%' : undefined,
+                                            width: selectedVideo?.width > selectedVideo?.height ? '100%' : undefined,
+                                        } :
+                                        {
+                                            aspectRatio: mediaCaptured?.ratio.width / mediaCaptured?.ratio.height,
+                                            height: mediaCaptured?.ratio.height >= mediaCaptured?.ratio.width ? '100%' : undefined,
+                                            width: mediaCaptured?.ratio.width > mediaCaptured?.ratio.height ? '100%' : undefined,
+                                        }
+
+                                    ,
                                 ]}
                             >
                                 <VideoPlayerTest

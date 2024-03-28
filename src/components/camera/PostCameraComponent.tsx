@@ -1,5 +1,5 @@
 import { Entypo, Feather, FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Video } from 'expo-av';
 import { Camera, CameraType, requestCameraPermissionsAsync, requestMicrophonePermissionsAsync } from 'expo-camera';
@@ -10,10 +10,19 @@ import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { formatTime } from '../../services/format/formatTimemmss';
 import { COLORS } from '../../styles/colors';
-import { NewPostNavigationProps } from '../../types/NavigationParams/newPostParams';
+import { NewPostNavigationProps, NewPostParams } from '../../types/NavigationParams/newPostParams';
 import VideoPlayerTest from '../Video/LocalVideoPlayer';
+type routes = RouteProp<NewPostNavigationProps, 'sendNewPost'>;
 
-type postNavigaton = NativeStackNavigationProp<NewPostNavigationProps, 'newPostOptions'>;
+type postNavigaton = NativeStackNavigationProp<NewPostParams, 'newPost'>;
+
+export type CapturedMediaItem = {
+    // id: string; // Un identificador único para el elemento de media
+    uri: string; // El URI de la imagen o video
+    mediaType: string;
+    ratio: { height: number, width: number } // Tipo de media, puede ser imagen o video
+    // Agrega aquí cualquier otro campo relevante
+};
 
 
 export default function PostCameraComponent() {
@@ -48,9 +57,9 @@ export default function PostCameraComponent() {
     };
 
     const takePicture = async () => {
-        if (cameraRef.current) {
+        if (cameraRef?.current) {
             try {
-                let photo = await cameraRef.current.takePictureAsync();
+                let photo = await cameraRef?.current?.takePictureAsync();
                 // Verifica si la foto fue tomada con la cámara frontal
                 if (type === CameraType.front) {
                     // Aplica la transformación de espejo a la foto
@@ -94,14 +103,14 @@ export default function PostCameraComponent() {
 
     // Suponiendo que mediaUri es el URI del video que has grabado
     const startRecording = async () => {
-        if (cameraRef.current && !isRecording) {
+        if (cameraRef?.current && !isRecording) {
             let timer = null; // Inicializa la variable del temporizador fuera del bloque try-catch.
             try {
                 setIsRecording(true);
                 // Asegúrate de que el estado inicial de recordingTime sea 0 antes de iniciar la grabación.
                 setRecordingTime(0);
 
-                const videoPromise = cameraRef.current.recordAsync({
+                const videoPromise = cameraRef?.current.recordAsync({
                     quality: Camera.Constants.VideoQuality['4:3'],
                 });
 
@@ -132,8 +141,8 @@ export default function PostCameraComponent() {
 
 
     const stopRecording = () => {
-        if (cameraRef.current && isRecording) {
-            cameraRef.current.stopRecording();
+        if (cameraRef?.current && isRecording) {
+            cameraRef?.current.stopRecording();
             setIsRecording(false);
         }
     };
@@ -157,18 +166,34 @@ export default function PostCameraComponent() {
         return <Text>No access to camera</Text>;
     }
 
-    const confirmMedia = () => {
-        // Aquí manejas la confirmación del media, por ejemplo subir la imagen o el vídeo
-        Alert.alert('Media Confirmed', `Media URI is: ${mediaUri}`);
-        // Aquí deberías resetear o manejar el estado como corresponda
-    };
-
     const cancelMedia = () => {
         setMediaUri(null); // Resetear el estado para permitir una nueva captura
     };
 
 
-    console.log("video info", videoInfo);
+    console.log("data de video grabado", mediaUri);
+
+
+
+    // Asumiendo que `mediaUri` y `mode` contienen la información relevante
+    const continueToNewPost = () => {
+
+
+        if (mediaUri) {
+            const mediaItem: CapturedMediaItem = {
+                uri: mode === "photo" ? mediaUri.uri : mediaUri, // Suponiendo que mediaUri es un objeto con una propiedad uri
+                mediaType: mode,
+
+                ratio: { height: 4, width: 3 }
+                // 'photo' o 'video', basado en el estado 'mode'
+            };
+            // Navega a la pantalla newPost con los parámetros
+
+            navigation.navigate('newPost', { mediaCaptured: mediaItem });
+        }
+    };
+
+
 
     const styles = style(theme)
 
@@ -193,7 +218,7 @@ export default function PostCameraComponent() {
                     <TouchableOpacity onPress={resetCamera}>
                         <Feather name="arrow-left" size={24} color={theme.colors.onPrimary} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => continueToNewPost()}>
                         <Text style={{ fontWeight: "600", color: theme.colors.onPrimary }} >{t("action.next")}</Text>
                     </TouchableOpacity>
                 </View>

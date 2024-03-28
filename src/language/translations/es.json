@@ -76,13 +76,19 @@
     "action": {
         "send": "Enviar",
         "post_type": "Selecciona tipo de publicacion",
-        "next": "Siguiente"
+        "next": "Siguiente",
+        "delete_post": "Eliminar post",
+        "delete": "Eliminar",
+        "post_delete_confirmation": "¿Estás seguro que deseas borrar este post permanentemente?",
+        "deleting_post": "Eliminando post"
     },
     "option": {
         "new_post": "Nuevo post"
     },
     "alert": {
         "ups_something_went_wrong": "\"¡Ups! Algo salió mal",
-        "your_post_could_not_be_shared": "Tu publicación no se pudo compartir. Revisa tu conexión y prueba de nuevo."
+        "your_post_could_not_be_shared": "Tu publicación no se pudo compartir. Revisa tu conexión y prueba de nuevo.",
+        "post_deleted_successfully": "¡El post ha sido borrado exitosamente!",
+        "post_not_deleted": "No se pudo borrar el post. Por favor, intenta de nuevo."
     }
 }

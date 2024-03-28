@@ -18,7 +18,7 @@
         "post": "Post"
     },
     "test": {
-        "counting": "counting {{0}} of {{1}}"
+        "counting": "counting {{0}} from {{1}}"
     },
     "label": {
         "email": "Email",
@@ -35,13 +35,13 @@
         "update_password_subtitle": "Please update your password.",
         "verification_code": "Verification code",
         "enter_verification_code": "Please enter the verification code sent to your email.",
-        "no_code_received": "Didn't you receive the code?",
+        "no_code_received": "Did you not receive the code?",
         "don`t_have_account": "I don`t have an account",
-        "restore_password": "Restore password.",
+        "restore_password": "Reset password.",
         "enter_associated_email": "Please enter the email associated with your account.",
         "no_images_selected": "No images selected",
         "select_images": "Select images",
-        "create_new_post": "Create new publication",
+        "create_new_post": "Create new post",
         "new_post": "New post.",
         "videos": "Videos",
         "images": "images",
@@ -57,8 +57,8 @@
         "your_post_has_been_shared": "Your post has been shared."
     },
     "message": {
-        "password_change": "Successful password change.",
-        "change_email_message": "To complete this action a confirmation code will be sent to the associated mail.",
+        "password_change": "Password change successful.",
+        "change_email_message": "To complete this action, a confirmation code will be sent to the associated email.",
         "verification_code_sent": "Verification code sent."
     },
     "error": {
@@ -76,13 +76,19 @@
     "action": {
         "send": "Send",
         "post_type": "Select post type",
-        "next": "Next"
+        "next": "Next",
+        "delete_post": "Delete post",
+        "delete": "Delete",
+        "post_delete_confirmation": "Are you sure you want to delete this post permanently?",
+        "deleting_post": "Deleting post"
     },
     "option": {
         "new_post": "New post"
     },
     "alert": {
-        "ups_something_went_wrong": "\"Ups! Something went wrong",
-        "your_post_could_not_be_shared": "Your post couldn't be shared. Check your connection and try again."
+        "ups_something_went_wrong": "\"Oops! Something went wrong",
+        "your_post_could_not_be_shared": "Your post couldn't be shared. Check your connection and try again.",
+        "post_deleted_successfully": "The post has been successfully deleted!",
+        "post_not_deleted": "The post could not be deleted. Please try again."
     }
 }

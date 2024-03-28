@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
@@ -8,7 +9,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import i18n from './src/language/i18';
 import Routes from './src/navigation/routes';
 import { persistor, store } from './src/redux/store/store';
-
 export default function App() {
   const isDarkMode = false; // Cambia este valor para simular el cambio de tema
 

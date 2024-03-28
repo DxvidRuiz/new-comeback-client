@@ -31,17 +31,17 @@ const VideoPlayerTest = (props: VideoPlayerProps) => {
       let mid = Dimensions.get("screen").width / 2;
 
       if (touchX < mid) {
-        videoRef.current.getStatusAsync().then((status) => {
+        videoRef?.current.getStatusAsync().then((status) => {
           const newPosition = Math.max(status.positionMillis - 10000, 0);
-          videoRef.current.setPositionAsync(newPosition);
+          videoRef?.current.setPositionAsync(newPosition);
         });
       } else {
-        videoRef.current.getStatusAsync().then((status) => {
+        videoRef?.current.getStatusAsync().then((status) => {
           const newPosition = Math.min(
             status.positionMillis + 10000,
             status.durationMillis
           );
-          videoRef.current.setPositionAsync(newPosition);
+          videoRef?.current.setPositionAsync(newPosition);
         });
       }
     });
@@ -73,13 +73,13 @@ const VideoPlayerTest = (props: VideoPlayerProps) => {
 
   const togglePlayPause = () => {
     if (isVideoFinished) {
-      videoRef.current.replayAsync();
+      videoRef?.current.replayAsync();
       setIsVideoFinished(false);
     } else {
       if (isPlaying) {
-        videoRef.current.pauseAsync();
+        videoRef?.current.pauseAsync();
       } else {
-        videoRef.current.playAsync();
+        videoRef?.current.playAsync();
       }
     }
     setIsPlaying(!isPlaying);
@@ -88,16 +88,16 @@ const VideoPlayerTest = (props: VideoPlayerProps) => {
   const togglePlaybackSpeed = () => {
     const nextSpeedIndex = playbackSpeedOptions.indexOf(playbackSpeed) + 1;
     if (nextSpeedIndex < playbackSpeedOptions.length) {
-      videoRef.current.setRateAsync(playbackSpeedOptions[nextSpeedIndex], true);
+      videoRef?.current.setRateAsync(playbackSpeedOptions[nextSpeedIndex], true);
       setPlaybackSpeed(playbackSpeedOptions[nextSpeedIndex]);
     } else {
-      videoRef.current.setRateAsync(playbackSpeedOptions[0], true);
+      videoRef?.current.setRateAsync(playbackSpeedOptions[0], true);
       setPlaybackSpeed(playbackSpeedOptions[0]);
     }
   };
 
   const toggleMute = () => {
-    videoRef.current.setIsMutedAsync(isMuted);
+    videoRef?.current.setIsMutedAsync(isMuted);
     setIsMuted(!isMuted);
   };
 
@@ -143,7 +143,7 @@ const VideoPlayerTest = (props: VideoPlayerProps) => {
               onToggleMute={toggleMute}
               onTogglePlaybackSpeed={togglePlaybackSpeed}
               onSeek={(value) => {
-                videoRef.current.setPositionAsync(+value);
+                videoRef?.current.setPositionAsync(+value);
                 setCurrentTime(+value);
               }}
               onToggleFullscreen={toggleFullscreen}

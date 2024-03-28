@@ -1,6 +1,6 @@
 // features/authSlice.ts
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { getProfilePosts, newPost } from "../actions/profile.actions";
+import { deletePost, getProfilePosts, newPost } from "../actions/profile.actions";
 
 // Initial state for the slice
 const initialState = {
@@ -8,6 +8,7 @@ const initialState = {
     error: null,
     profilePosts: [],
     loadingNewPost: false,
+    loadingDeletePost: false,
     newPost: {},
     otpCodeCountdown: false,
     otpCodetimeRemaining: 0,
@@ -52,11 +53,37 @@ export const profileSlice = createSlice({
             })
             .addCase(newPost.fulfilled, (state, action: PayloadAction<any>) => {
                 state.loadingNewPost = false;
+                state.profilePosts.unshift(action.payload); // Añade al principio
+
                 state.error = null;
                 // state.profilePosts = action.payload
             })
             .addCase(newPost.rejected, (state, action) => {
                 state.loadingNewPost = false;
+                state.error = action.error.message || "Something went wrong";
+            });
+        builder
+            .addCase(deletePost.pending, (state) => {
+                state.loadingDeletePost = true;
+                state.error = null;
+            })
+            .addCase(deletePost.fulfilled, (state, action: PayloadAction<any>) => {
+                state.loadingDeletePost = false;
+                state.error = null;
+
+                console.log("ddddddddd", action.payload.id);
+
+
+
+                if (action?.payload) {
+                    state.profilePosts = state.profilePosts.filter(post => post._id !== action.payload.id);
+                } else {
+                    // Manejar el caso en el que no hay payload definido
+                    console.error("Payload undefined in deletePost.fulfilled");
+                }
+            })
+            .addCase(deletePost.rejected, (state, action) => {
+                state.loadingDeletePost = false;
                 state.error = action.error.message || "Something went wrong";
             });
 
